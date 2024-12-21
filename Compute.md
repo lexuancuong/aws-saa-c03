@@ -132,8 +132,8 @@
 - Memory
 - Networking
 
-## Lambda
-### Overview
+# Lambda
+## Overview
 - Serverless compute service, virtual function - no server to manage!
 - Run code without provisioning servers
 - Pay only for compute time used
@@ -141,15 +141,15 @@
 - Automatic scaling. When we need to increase ram, it will also increase CPU and network.
 - Integrated with many AWS services
 
-### Features
-#### Limit Execution Per Region
+## Features
+### Limit Execution Per Region
 - Memory: 128MB to 10GB
-- Maximum execution time: 15 minutes
+- MAXIMUM EXECUTION TIME: 15 minutes (Important in the exam)
 - Environment variables support: 4 KB
 - Temporary disk capacity (/tmp): 512MB to 10GB
 - Concurrent executions: 1000 (can be increased)
 
-##### Integrations
+### Integrations
 - API Gateway
 - Kinesis
 - DynamoDB
@@ -161,21 +161,21 @@
 - SQS
 - Cognito
 
-##### Deployment
+### Deployment
 - Function packages must be up to 50MB zipped, 250MB unzipped
 - Can use Layers to manage dependencies
 - Container images up to 10GB
 
-##### Combine with other tool Event Bridges or SNS to consume event from RDS
+### Combine with other tool Event Bridges or SNS to consume event from RDS
 
-#### Security
+## Security
 - Execution Role (IAM Role)
 - Resource-based Policies
 - Encryption at rest using KMS
 - CloudWatch Logs integration
 - Network security with VPC configuration
 
-#### Pricing
+## Pricing
 - Pay per request
   - First 1 million requests per month are free
   - $0.20 per 1 million requests thereafter
@@ -190,24 +190,7 @@
   - Network traffic when accessing internet or other AWS services
   - CloudWatch Logs storage for Lambda logs
 
-#### Use Cases
-- Real-time File Processing
-- Real-time Stream Processing
-- ETL
-- Cron Jobs
-- Web Applications
-- Mobile Backends
-
-#### Best Practices
-- Keep functions focused and small
-- Minimize cold starts
-- Use environment variables
-- Implement proper error handling
-- Monitor and set alarms
-- Use versions and aliases
-- Optimize memory settings
-
-#### CloudFront Functions
+## CloudFront Functions
 - Modern applications execute some form of the logic at the edge.
 - Edge Function:
     - A code that you write and attach to CloudFront distributions
@@ -216,7 +199,7 @@
 - Use cases: 
     - Customize the CDN content
     - A/B Testing
-##### CloudFront Functions
+## CloudFront Functions
 - Lightweight functions written in Javascript
 - For high-scale, latency-sensitive CDN customizations
 - Sub-ms startup times, milions of requests/second
@@ -225,7 +208,7 @@
     - Viewer Response: before CloudFront forwards the response to the viewer
 - Native feature of Cloudfront
 
-##### Lambda@Edge
+## Lambda@Edge
 - Writen in NodeJs or Python
 - Scales to 1000s of requests/second
 - Used to change CloudFront requests and responses
@@ -235,7 +218,7 @@
     - Origin Response
 - Author your functions in one AWS Region then CloudFront replicates to its locations
 
-##### Comparison between CloudFront Functions and Lambda@Edge
+## Comparison between CloudFront Functions and Lambda@Edge
 | Feature | CloudFront Functions | Lambda@Edge |
 |---------|---------------------|-------------|
 | Runtime | JavaScript | Node.js and Python |
@@ -251,10 +234,10 @@
 | Supported Events | Viewer Request, Viewer Response | Viewer Request, Viewer Response, Origin Request, Origin Response |
 | Cold Starts | No cold starts (sub-millisecond) | Yes (>100ms) |
 
-#### Lambda in VPC
+## Lambda in VPC
 - By default, Lambda function is launched outside your own VPC (in an AWS-owned VPC)
 - Therefore, it cannot access resources in your VPC (RDS, ElastiCache, internal ELB,...)
-##### How to configure Lambda to be in VPC
+### How to configure Lambda to be in VPC
 - You must define the VPC ID, the subnets and the security groups
 - Lambda will create an ENI (Elastic Network Interface) in your subnets
 - If Lambda functions directly access your database, they may open too many connections under high load => Must use RDS Proxy 
@@ -263,6 +246,30 @@
     - Improve security by enforcing IAM authentication and storing credentials in Secrets Manager
 - The Lambda function must be deployed in your VPC, because RDS Proxy is never publicly accessible
 
+## Step Functions
+### Overview
+- Serverless visual workflow service
+- Orchestrate Lambda functions and other AWS services
+- JSON-based Amazon States Language
+- Provides visual interface to serverless applications
+- Automatically handles errors, retries, and state
+- Maximum execution time of 1 year
+- Possibility of implementing human approval feature
+- Use cases: order fulfillment, data processing, web applications, any workflow
 
+## Use Cases
+- Real-time File Processing
+- Real-time Stream Processing
+- ETL
+- Cron Jobs
+- Web Applications
+- Mobile Backends
 
-
+## Best Practices
+- Keep functions focused and small
+- Minimize cold starts
+- Use environment variables
+- Implement proper error handling
+- Monitor and set alarms
+- Use versions and aliases
+- Optimize memory settings
