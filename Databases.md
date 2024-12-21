@@ -59,7 +59,7 @@ RCU and WCU are decoupled, so you can increase/decrease each value separately.
 - Stored for 24 hours
 - Can trigger Lambda functions
 - Use cases:
-  - Replication
+  - Replication in the same region and over regions
   - Analytics
   - Notifications
   - Audit trails
