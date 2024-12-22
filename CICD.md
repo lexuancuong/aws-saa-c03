@@ -89,3 +89,28 @@ docker pull aws_account_id.dkr.ecr.region.amazonaws.com/repository:tag
 - Build CI/CD pipelines with container images
 
 
+# AWS CloudFormation
+
+AWS CloudFormation is an Infrastructure as Code (IaC) service that enables you to define and provision AWS resources using templates.
+It helps automate resource creation, configuration, and management in a consistent and repeatable way.
+
+## Key Features
+- **Templates**: Define resources in YAML or JSON files.
+- **Declarative Syntax**: Specify the desired state of resources without needing procedural code.
+- **Resource Stacks**: Deploy and manage a group of resources as a single unit (stack).
+- **Change Sets**: Preview the impact of changes before applying updates.
+- **Drift Detection**: Identify resource configurations that differ from the template.
+- **Cross-Region and Cross-Account**: Manage resources across multiple regions and accounts.
+
+## Benefits
+- **Automation**: Simplifies the provisioning and management of resources.
+- **Consistency**: Ensures identical infrastructure across environments.
+- **Rollback Support**: Automatically rolls back changes if resource creation fails.
+- **Cost Management**: Deletes all resources in a stack with a single command.
+- **Integration**: Works with AWS services like CodePipeline for CI/CD.
+
+## Use Cases
+1. **Environment Provisioning**: Automate the creation of production, staging, or development environments.
+2. **Multi-Region Deployment**: Deploy infrastructure in multiple regions with the same template.
+3. **Disaster Recovery**: Quickly replicate infrastructure for failover scenarios.
+4. **Compliance**: Ensure resources adhere to defined standards.

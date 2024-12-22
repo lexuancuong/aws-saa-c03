@@ -1,32 +1,5 @@
 # AWS SAA C03
 
-## Organization Management
-
-### IAM
-
-#### Overview
-- Identity and Access Management Global Service  
-- Root account is created by default, shouldn't be used or shared  
-- Group only contains users, not other groups  
-- Permissions can be assigned directly but should be attached to users via groups  
-- IAM policy could inherit permissions if the user belongs to multiple groups  
-
-#### Configuration
-- **SID**: Statement ID  
-- Can configure policy with JSON  
-- **Effect**: Whether the statement allows or denies  
-- **Principal**: Account/user/role to which this policy applies  
-- **Action**: List of actions this policy allows or denies  
-- **Resource**: List of resources to which the actions apply  
-- **Condition**: Specifies when this policy is in effect  
-
-#### MFA
-- Virtual app  
-- Security key  
-- TOTP  
-
-#### Tips
-- On the AWS console UI, the root account doesn't have an IAM user icon on the top right.
 
 ## Storage
 
