@@ -126,3 +126,72 @@ IAM policies to regulate access to the SNS API
 - Perfect for enterprise applications that need to migrate to the cloud
 - Supports queue and pub/sub patterns
 
+# Amazon MSK (Managed Streaming for Apache Kafka)
+## Overview
+- Fully managed Apache Kafka service
+- Alternative to Amazon Kinesis
+- Allows you to create, update, and delete clusters
+- MSK creates and manages Kafka brokers nodes and Zookeeper nodes for you
+- Deploy the MSK cluster in your VPC, multi-AZ (up to 3 AZs)
+- Automatic recovery from common Apache Kafka failures
+- Data is stored on EBS volumes for as long as you want
+
+## Key Features
+- MSK Serverless: Automatically provisions and scales compute and storage
+- Automatic patching and maintenance
+- Built-in security (encryption in-transit and at-rest using KMS)
+- Highly available (up to 99.9% SLA)
+- Backup and restore capabilities
+- Monitoring through CloudWatch
+- Data is stored on EBS volumes for as long as you want
+
+## Integration Points
+- Producers:
+  - EC2 instances
+  - IoT devices
+  - On-premises servers
+- Consumers:
+  - Lambda
+  - EC2
+  - ECS/EKS
+  - S3 (through MSK Connect)
+  - Kinesis Data Analytics
+  - Glue (Streaming ETL)
+
+## Common Use Cases
+- Real-time streaming data pipelines
+- Real-time analytics
+- Real-time data transformations
+- Event-driven applications
+- Pub/sub messaging patterns at scale
+
+## MSK vs Kinesis Data Streams
+| Feature | MSK | Kinesis Data Streams |
+|---------|-----|---------------------|
+|**Scaling**|Manual scaling (provisioned) or Serverless|On-demand or provisioned|
+|**Message Size**|1MB  default, configurable for higher 10MB|1MB message size limit|
+|**Data Retention**|As long as you want|1-365 days|
+|**Protocol**|Kafka (custom TCP)|HTTPS|
+|**Use Case**|When you need Kafka-specific features or already use Kafka|Simple streaming needs with AWS integration|
+
+## Security
+- In-flight encryption (TLS)
+- At-rest encryption (KMS)
+- Authentication using IAM
+- Authorization using Apache Kafka ACLs
+- Network security using VPC
+- SASL/SCRAM authentication
+- Monitoring through CloudWatch
+- Logging through CloudTrail
+
+## Exam Tips
+- Choose MSK when:
+  - You need Apache Kafka compatibility
+  - You want managed Kafka without operational overhead
+  - You need longer data retention
+  - You have existing Kafka applications
+- Choose Kinesis when:
+  - You want simpler AWS native integration
+  - You don't need Kafka-specific features
+  - You prefer serverless by default
+

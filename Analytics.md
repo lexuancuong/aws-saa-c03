@@ -58,6 +58,9 @@
 - Improves query performance
 - Automatically available for RA3 nodes
 
+### Enhanced VPC Routing
+Forces all COPY and UNLOAD traffic moving between your cluster and data repositories through your VPCs
+
 ## **4. Integration Points (Exam Focus)**
 ### **Data Loading**
 - **S3**: COPY command (most efficient)
@@ -285,6 +288,85 @@ It can continuously capture gigabytes of data per second from hundreds of source
 - VPC Endpoints available for Kinesis to access within VPC.
 - Monitor API calls using CloudTrail
 
+## Kinesis Data Analytics
+
+### Overview
+- Real-time analytics on streaming data using SQL or Apache Flink
+- Fully managed, no servers to manage
+- Automatic scaling
+- Pay for actual consumption rate
+- Two options:
+  - SQL applications (easier)
+  - Apache Flink (more powerful) -> Amazon Managed Service for Apache Flink.
+
+### SQL Applications Features
+- Real-time analytics using SQL
+- Input streams:
+  - Kinesis Data Streams
+  - Kinesis Data Firehose
+- Output:
+  - Kinesis Data Streams: create streams out of the real-time analytics queries
+  - Kinesis Data Firehose: send analytics query results to destinations
+  - Lambda
+- Reference data from S3
+- Built-in SQL functions:
+  - Time-based analytics
+  - Statistical functions
+  - String manipulations
+  - Aggregations
+
+### Apache Flink Features
+- More powerful processing with Apache Flink
+- Complex event processing
+- Advanced analytics
+- Custom state management
+- Any Apache Flink programming features
+- Flink does not read from Firehose (use Kinesis Analytics for SQL instead)
+
+### Use Cases
+- Time-series analytics
+- Real-time dashboards
+- Real-time metrics
+- Anomaly detection
+- Stream processing
+
+### Common Architectures
+- Streaming ETL
+  - Input: Kinesis Data Streams
+  - Processing: Clean & transform data
+  - Output: To data warehouse via Firehose
+- Continuous Metric Generation
+  - Input: Real-time data
+  - Processing: Calculate metrics
+  - Output: To dashboards
+- Responsive Analytics
+  - Input: Live data streams
+  - Processing: Real-time analysis
+  - Output: Alerts & notifications
+
+### Security
+- IAM roles for permissions
+- Encryption in-transit (TLS)
+- Encryption at rest (KMS)
+- VPC endpoints supported
+- CloudWatch monitoring
+- CloudTrail auditing
+
+### Scaling & Performance
+- Automatically scales processing
+- Input processing capacity:
+  - SQL: 100 KB/second per input stream
+  - Flink: Based on Kinesis Processing Units (KPU)
+- Output capacity matches input processing
+
+### Best Practices
+- Use time windows appropriately
+- Implement error handling
+- Monitor application health
+- Use reference data when needed
+- Regular testing of processing logic
+
+
 ## Kinesis Data Firehose
 - Fully managed service for delivering data streams: ETL with Lambda and save backup S3 objects
 - Automatic scaling, serverless (with lambda)
@@ -358,3 +440,265 @@ It can continuously capture gigabytes of data per second from hundreds of source
 Sending using the Partition Key value. i.e `truck_id` (multiple truck_id)
 Because the same key will always go to the same shard.
 
+# EMR
+## Overview
+- EMR stands for Elastic MapReduce
+- EMR helps creating **Hadoop clusters (Big Data)** to analyze and process vast amount of data
+- The clusters can be made of hundreeds of EC2 instances
+- EMR comes bundled with Pache Spark, HBase, Presto, Flink,..
+- EMR takes care of all provisioning and configurations
+- Auto-scaling and integrated with Spot instances
+## Use cases
+- Data processing
+- Machine learning
+- Web indexing
+- Big data
+## Components
+### Master Node
+Manage the cluster, coordinate, manage health - long running
+### Core Node
+Run tasks and store data - long running
+### Task Node
+Just to run tasks - usually spot
+### Purchasing options
+- On-demand: reliable, predictable, won't be terminated.
+- Reserved (min 1 year): cost saving (EMR will automatically use if available).
+- Spot Instances: cheaper, can be terminated, less reliable.
+
+# **Amazon QuickSight**
+
+## **1. Core Concepts**
+- **Serverless** Business Intelligence (BI) service
+- **Pay-per-session** pricing model
+- **Machine learning** powered insights
+- **Embedded analytics** capability
+- Supports **interactive dashboards**
+
+## **2. Key Features**
+### **Data Sources**
+- **AWS Services**:
+  - RDS, Aurora, Redshift
+  - S3, Athena
+  - OpenSearch
+  - Timestream
+- **SaaS Applications**:
+  - Salesforce, ServiceNow
+  - Jira, GitHub
+- **On-premises** databases
+- **Excel/CSV** files
+
+### **SPICE Engine**
+- In-memory computation engine
+- Super-fast, parallel calculations
+- Automatically replicates data for HA
+- Pay per GB of SPICE capacity
+
+### **ML Insights**
+- Anomaly detection
+- Forecasting
+- Auto-narratives
+- Suggested insights
+- What-if analysis
+
+### **Integrations**
+#### **AWS Services**
+- **Redshift**:
+  - Direct connection
+  - SPICE import
+  - Row-level security
+- **RDS/Aurora**:
+  - Direct SQL queries
+  - Automatic refresh
+  - SSL encryption
+- **S3**:
+  - Multiple file formats (CSV, JSON, XLSX)
+  - Manifest files
+  - Auto-refresh scheduling
+- **Athena**:
+  - Direct query integration
+  - Federated queries
+  - Cost control via workgroups
+- **OpenSearch**:
+  - Real-time analytics
+  - Log analysis
+  - Direct queries
+
+#### **Third-Party Services**
+- **Salesforce**:
+  - Direct connection
+  - Scheduled refresh
+  - Filter support
+- **ServiceNow**:
+  - Incident management
+  - Service metrics
+- **Jira/GitHub**:
+  - Project analytics
+  - Development metrics
+#### Import Manually
+- XLSX, CSV, JSON, TSV, ELF&CLF
+
+## **4. Enterprise Features**
+### **User Management**
+- **Standard**: Individual users
+- **Enterprise**: Active Directory integration
+- **Reader sessions**: Pay-per-session pricing
+- **Author sessions**: Dashboard creation
+- **Column-Level security**: CLS
+- QuickSight's user management is different from IAM, it isn't IAM's features.
+### **Sharing & Collaboration**
+- Email reports
+- Embedded dashboards
+- Cross-account dashboard sharing
+- Dashboard versioning
+
+## **5. Common Use Cases**
+- **Business Analytics**
+  - Sales reporting
+  - Marketing analytics
+  - Financial analysis
+- **Operational Dashboards**
+  - Real-time monitoring
+  - KPI tracking
+- **Embedded Analytics**
+  - Customer-facing dashboards
+  - Application integration
+
+## **6. Exam Tips**
+- Remember: **Serverless BI** solution
+- Focus on **supported data sources**
+- Understand **SPICE** vs. Direct Query
+- Know **pricing model** (session-based)
+- Recognize **ML capabilities**
+- Consider for **embedded analytics** requirements
+
+## **7. Cost Optimization**
+- Use **SPICE** for frequently accessed data
+- Leverage **reader sessions** effectively
+- Monitor **usage patterns**
+- Choose appropriate **capacity planning**
+- Implement proper **user management**
+
+---
+
+
+# **AWS Glue**
+
+## **1. What is Glue?**
+- **Serverless ETL** (Extract, Transform, Load) service
+- Automatically discovers and catalogs metadata
+- Pay only for resources consumed during job runs
+- Simplifies data preparation for analytics
+
+## **2. Key Components**
+### **Glue Data Catalog**
+- Central **metadata repository**
+- Automatically discovers schema
+- Works with S3, RDS, Redshift
+- Used by Athena, Redshift Spectrum, EMR
+
+### **Glue Crawlers**
+- Automatically scan data sources
+- Identify data formats and schema
+- Update Data Catalog
+- Can run on schedule
+
+### **ETL Jobs**
+- Transform data between source and destination
+- Generates code in Python or Scala
+- Runs on Apache Spark environment
+- Serverless execution
+
+## **3. Common Use Cases**
+- Prepare data for analytics
+- Build data lakes on S3
+- Populate Redshift data warehouses
+- Enable serverless queries with Athena
+
+## **4. Key Integration Points**
+- **S3**: Data lakes
+- **Redshift**: Data warehousing
+- **Athena**: Serverless queries
+- **EMR**: Big data processing
+- **RDS/Aurora**: Relational databases
+
+## **5. Glue Extensions**
+
+### **Job Bookmarks**
+- Tracks data that has been processed
+- Prevents reprocessing of old data
+- Enables incremental processing
+- Helps manage processing state
+
+### **Elastic Views**
+- Combines data across multiple sources
+- Automatically handles data changes
+- Materializes views for performance
+- Serverless, pay-per-use
+
+### **DataBrew**
+- Visual data preparation tool
+- 250+ built-in transformations
+- No coding required
+- Visual profiling and cleaning
+
+### **Glue Studio**
+- Visual ETL development
+- Drag-and-drop interface
+- Job monitoring dashboard
+- Visual job development
+
+### **Streaming ETL**
+- Real-time ETL capabilities
+- Works with Kinesis, Kafka
+- Process streaming data
+- Near real-time transformations
+
+## **6. Exam Tips**
+- Remember: **Serverless ETL service**
+- Used for **data preparation** and **cataloging**
+- Choose when you need **automated schema discovery**
+- Perfect for **S3 data lake** scenarios
+
+---
+
+# **AWS Lake Formation**
+
+## **1. What is Lake Formation?**
+- **Central security** and **governance** service for data lakes
+- Built on top of AWS Glue
+- Simplifies data lake creation and management
+- Single place to set up data access controls
+
+## **2. Key Features**
+### **Security Management**
+- **Fine-grained access control** (column, row, and cell-level)
+- Centralized permissions management
+- Integration with IAM
+- Cross-account data sharing
+
+### **Data Discovery**
+- Automated data discovery
+- Central data catalog
+- Schema management
+- Metadata tagging
+
+## **3. Common Use Cases**
+- Create secure data lakes in days instead of months
+- Centralize data access controls
+- Implement data governance
+- Share data securely across accounts
+
+## **4. Integration Points**
+- **S3**: Storage layer
+- **Glue**: ETL and cataloging
+- **Athena**: Query service
+- **Redshift**: Data warehousing
+- **EMR**: Big data processing
+
+## **5. Exam Tips**
+- Remember: **Security and governance layer** for data lakes
+- Provides **fine-grained access control**
+- Built on top of **AWS Glue**
+- Simplifies **data lake creation**
+- Central place for **permissions management**
+- Enables **query services** like Athena
