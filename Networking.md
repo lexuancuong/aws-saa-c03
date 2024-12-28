@@ -23,6 +23,46 @@
   - Maintains persistent connections
   - Common for chat apps, streaming dashboards
 
+## Endpoint Types
+### Edge-Optimized (default)
+- Best for global clients
+- Requests are routed through CloudFront Edge locations
+- API Gateway still lives in one region
+- Improves latency for global clients
+- Great for public-facing APIs
+- Supports only REST APIs
+
+### Regional
+- For clients in the same region
+- Could manually combine with CloudFront
+- Use when:
+  - Need more control over caching strategies and distribution
+  - Clients are in the same region
+  - Want to manage your own CloudFront distribution
+- Supports both HTTP and REST APIs
+
+### Private
+- Can only be accessed from your VPC using VPC endpoint (ENI)
+- Use VPC endpoint policies to define access
+- Access through:
+  - VPC endpoints (must create VPC endpoint)
+  - Resource policies to define access
+- Use when:
+  - APIs should only be accessible from within your VPC
+  - Need complete isolation of your APIs
+- Supports only REST APIs
+
+### Endpoint Selection Considerations
+- Edge-Optimized: Global users, simple setup needed
+- Regional: 
+  - Same-region clients
+  - Custom CloudFront setup needed
+  - HTTP API requirement
+- Private: 
+  - Internal services only
+  - Maximum security needed
+  - VPC isolation required
+
 ## Key Features
 - Security
   - IAM roles and policies
@@ -91,46 +131,6 @@
 - Mobile app backends
 - B2B integrations
 - Internal API services
-
-## Endpoint Types
-### Edge-Optimized (default)
-- Best for global clients
-- Requests are routed through CloudFront Edge locations
-- API Gateway still lives in one region
-- Improves latency for global clients
-- Great for public-facing APIs
-- Supports only REST APIs
-
-### Regional
-- For clients in the same region
-- Could manually combine with CloudFront
-- Use when:
-  - Need more control over caching strategies and distribution
-  - Clients are in the same region
-  - Want to manage your own CloudFront distribution
-- Supports both HTTP and REST APIs
-
-### Private
-- Can only be accessed from your VPC using VPC endpoint (ENI)
-- Use VPC endpoint policies to define access
-- Access through:
-  - VPC endpoints (must create VPC endpoint)
-  - Resource policies to define access
-- Use when:
-  - APIs should only be accessible from within your VPC
-  - Need complete isolation of your APIs
-- Supports only REST APIs
-
-### Endpoint Selection Considerations
-- Edge-Optimized: Global users, simple setup needed
-- Regional: 
-  - Same-region clients
-  - Custom CloudFront setup needed
-  - HTTP API requirement
-- Private: 
-  - Internal services only
-  - Maximum security needed
-  - VPC isolation required
 
 ## Best Practices
 - Use appropriate API type for use case

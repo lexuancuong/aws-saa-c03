@@ -578,3 +578,109 @@ AWS Config is a service for assessing, auditing, and monitoring the configuratio
 | **Data Type**            | Tracks resource configurations.                | Logs API calls and events.                     | Tracks performance metrics, application logs.   |
 | **Retention**            | Configuration history in S3.                   | Logs stored in S3 or CloudWatch Logs.          | Metrics and logs based on user-defined policies.|
 | **Real-Time Monitoring** | Compliance evaluations in near real-time.       | No real-time monitoring or evaluation.         | Real-time monitoring with alerts and dashboards.|
+
+
+# Amazon GuardDuty
+## Overview
+Amazon GuardDuty is a continuous security monitoring and threat detection service that analyzes multiple AWS data sources and uses machine learning, anomaly detection, and integrated threat intelligence to identify unexpected and potentially malicious activity in your AWS environment.
+
+## Key Features
+
+### 1. Data Sources (Input)
+- **VPC Flow Logs**
+  - Network traffic patterns
+  - Communication with malicious IP addresses
+  - Unusual data transfer patterns
+
+- **CloudTrail Events**
+  - AWS account activity
+  - API calls
+  - Management events
+
+- **DNS Logs**
+  - Domain requests
+  - DNS query analysis
+  - Communication with known malicious domains
+
+- **Kubernetes Audit Logs** (EKS)
+  - Control plane monitoring
+  - Cluster activity analysis
+  - Container security threats
+
+### 2. Threat Detection
+#### Types of Threats Detected
+- **Reconnaissance**
+  - Port scanning
+  - Failed login attempts
+  - Unusual API calls
+
+- **Instance Compromises**
+  - Cryptocurrency mining (Has a dedicated finding for it)
+  - Malware infections
+  - Backdoor installations
+
+- **Account Compromises**
+  - Unauthorized IAM users
+  - Suspicious credential usage
+  - Unusual locations
+
+- **Data Exfiltration**
+  - Unusual data transfers
+  - S3 bucket tampering
+  - Suspicious API patterns
+
+### 3. Key Integrations
+- **EventBridge**
+  - Automated responses
+  - Custom workflows
+  - Alert routing
+
+- **Security Hub**
+  - Centralized findings
+  - Compliance status
+  - Security scores
+
+- **Detective**
+  - Deep investigation
+  - Root cause analysis
+  - Historical analysis
+
+## Comparison with Other AWS Security Services
+
+| Service | Primary Use Case | Key Differentiator |
+|---------|-----------------|-------------------|
+| GuardDuty | Threat Detection | ML-powered, continuous monitoring |
+| Security Hub | Security Posture | Centralized security management |
+| Detective | Investigation | Deep dive analysis and visualization |
+| Macie | Data Security | Sensitive data discovery and protection |
+
+# Amazon Inspector
+## Overview
+- Automated Security Assessments
+- For EC2 instances:
+    - Leveraging the AWS System Manager (SSM) agent
+    - Analyze against unintended network accessibility
+    - Analyze the running OS against known vlnerabilities
+- For Container Images push to Amazon ECR
+    - Asessment of Container Images as they are pushed
+
+- For Lambda Functions
+    - Identifies software vulnerabilities in function code and package dependencies
+    - Assessment of functions as they are deployed
+- Reporting and integration with AWS Security Hub
+- Send findings to Amazon Event Bridge
+
+## Evaluated things
+- Only for EC2, ECR and Lambda functions
+- Continous scanning of the infrastructure, only when needed
+- Package vulnerabilities
+- Network reachability
+- A risk score is associated with all vulnerabilities for prioritization.
+
+# Amazon Macie
+## Overview
+- Amazon Macie is a fully managed data security and data privacy service that uses machine learning and pattern matching to discover and protect your sensitive data in AWS.
+- Macie helps identify and alert you to sensitive data, such as PII.
+
+## Use cases
+- Analyze S3 to find PII and send to Amazon Event Bridge.

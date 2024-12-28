@@ -114,3 +114,131 @@ It helps automate resource creation, configuration, and management in a consiste
 2. **Multi-Region Deployment**: Deploy infrastructure in multiple regions with the same template.
 3. **Disaster Recovery**: Quickly replicate infrastructure for failover scenarios.
 4. **Compliance**: Ensure resources adhere to defined standards.
+
+# Amazon Machine Images (AMI)
+
+## Overview
+- Pre-configured templates for EC2 instances
+- Contains the operating system, applications, and configurations
+- Can be AWS-provided, marketplace, or custom-built
+- Regional resource (specific to an AWS region)
+- Can be copied across regions
+
+## Types of AMIs
+1. **Amazon Quick Start AMIs**
+   - Base OS images provided by AWS
+   - Regular security patches
+   - Free to use (only pay for infrastructure)
+
+2. **AWS Marketplace AMIs**
+   - Pre-configured with third-party software
+   - Often includes licensing costs
+   - Verified by AWS
+
+3. **Community AMIs**
+   - Shared by AWS community members
+   - Use with caution - no AWS verification
+   - Free to use
+
+4. **Custom AMIs**
+   - Created from your EC2 instances
+   - Include your specific configurations
+   - Can be shared across accounts
+
+## AMI Creation Process
+```bash
+# Basic AMI creation
+aws ec2 create-image \
+    --instance-id i-1234567890abcdef0 \
+    --name "My-Custom-AMI" \
+    --description "AMI for production servers"
+```
+
+### Steps:
+1. Prepare the instance (updates, cleanup)
+2. Create AMI (snapshot is taken)
+3. Wait for AMI to be available
+4. Launch new instances from AMI
+
+## Key Features
+
+### 1. Storage Configuration
+- **Root Volume**:
+  - EBS or Instance Store backed
+  - Contains OS and boot data
+  
+- **Additional Volumes**:
+  - Can include multiple EBS volumes
+  - Volume configurations saved in AMI
+
+### 2. Permissions
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Effect": "Allow",
+        "Principal": {"AWS": "arn:aws:iam::123456789012:root"},
+        "Action": "ec2:LaunchInstance",
+        "Resource": "arn:aws:ec2:region::image/ami-id"
+    }]
+}
+```
+
+### 3. Cross-Region Copying
+- Copy AMIs to other regions
+- Useful for:
+  - Disaster recovery
+  - Multi-region deployment
+  - Geographic expansion
+
+## Best Practices
+
+### Security
+1. **Regular Updates**
+   - Keep base AMIs current
+   - Apply security patches
+   - Document changes
+
+2. **Access Control**
+   - Restrict AMI sharing
+   - Use encryption for sensitive data
+   - Regular audits of shared AMIs
+
+### Cost Optimization
+1. **Storage Management**
+   - Delete unused AMIs
+   - Clean up snapshots
+   - Use lifecycle policies
+
+2. **Region Strategy**
+   - Copy AMIs only when needed
+   - Consider transfer costs
+   - Clean up copied AMIs
+
+## Common Use Cases
+1. **Golden Image Strategy**
+   - Standard configurations
+   - Compliance requirements
+   - Quick deployment
+
+2. **Backup and DR**
+   - System recovery
+   - Cross-region failover
+   - Version control
+
+3. **Auto Scaling**
+   - Launch templates
+   - Consistent configurations
+   - Quick scaling
+
+4. **Migration**
+   - Moving workloads
+   - Environment replication
+   - Cloud migration
+
+## Limitations
+- Regional resource
+- Size limitations
+- Cannot modify after creation
+- Cannot delete if in use
+- Storage costs for AMIs and snapshots
