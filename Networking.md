@@ -862,4 +862,128 @@ VPC Endpoints allow you to privately connect your VPC to supported AWS services 
 | Latency | Consistent | Variable |
 | Path | Private network | Public internet |
 | Setup time | Months | Hours |
-| Cost |
+
+# AWS Transit Gateway (TGW)
+
+## Overview
+• For having transitive peering between thousands of VPC and on-premises, hub-and-spoke (star) connection
+• Regional resource, can work cross-region
+• Share cross-account using Resource Access Manager (RAM)
+• You can peer Transit Gateways across regions
+• Route Tables: limit which VPC can talk with other VPC
+• Works with Direct Connect Gateway, VPN connections
+• Supports IP Multicast (not supported by any other AWS service)
+
+## Key Features
+
+### 1. Network Connectivity
+- Connect thousands of VPCs and on-premises networks
+- Hub-and-spoke (star) architecture
+- Transitive peering between networks
+- Route tables to control traffic flow
+- Support IP multicast
+
+### 2. Types of Attachments
+- VPC attachments
+- Direct Connect Gateway attachments
+- VPN attachments (Site-to-Site)
+- Peering attachments (Cross-region)
+- Connect to other transit gateways
+
+### 3. Routing
+- Route tables at the transit gateway level
+- Route propagation can be enabled/disabled
+- Support static and dynamic routing
+- Blackhole routes for security
+
+## Common Architectures
+
+### 1. Centralized Router
+```plaintext
+VPC1 → Transit Gateway → VPC2
+         ↑
+         ↓
+      VPC3, VPC4, On-premises
+```
+
+### 2. Isolated VPCs
+```plaintext
+Dev VPCs → Transit Gateway (Route Table 1)
+Prod VPCs → Transit Gateway (Route Table 2)
+```
+
+### 3. Shared Services
+```plaintext
+Application VPCs → Transit Gateway → Shared Services VPC
+                        ↓
+                  On-premises
+```
+
+## Use Cases
+
+### 1. VPC Consolidation
+- Simplify complex VPC peering
+- Reduce connection count
+- Centralized management
+
+### 2. Multi-Account AWS Architecture
+- Connect VPCs across accounts
+- Share resources efficiently
+- Maintain security boundaries
+
+### 3. Global Network Architecture
+- Connect multiple regions
+- Centralize internet egress
+- Distributed application deployment
+
+### 4. Hybrid Cloud Networking
+- Connect on-premises with AWS
+- Extend corporate network
+- Consistent connectivity
+
+## Limitations
+- Regional resource (but can peer across regions)
+- Maximum bandwidth per VPC connection: 50 Gbps
+- 5000 attachments per transit gateway
+- Maximum of 10,000 routes per route table
+
+## Pricing
+- Hourly charge for each attachment
+- Data processing charges per GB
+- Additional charges for:
+  - VPN attachments
+  - Peering connections
+  - Inter-region traffic
+
+## Integration with Other Services
+### 1. Direct Connect
+- Can attach Direct Connect gateway
+- Provides private connectivity
+- Supports multiple Direct Connect connections
+
+### 2. Site-to-Site VPN
+- Supports multiple VPN connections
+- Can use with Direct Connect as backup
+- Automatic failover capability
+
+### 3. VPC
+- Attach multiple VPCs
+- Control routing between VPCs
+- Share resources across VPCs
+
+### 4. Route 53 Resolver
+- DNS resolution across networks
+- Centralized DNS management
+- Hybrid DNS solution
+
+## Transit Gateway vs Other Solutions
+
+| Feature | Transit Gateway | VPC Peering | Direct Connect |
+|---------|----------------|--------------|----------------|
+| Scalability | Thousands of connections | Limited peer-to-peer | Limited by physical connections |
+| Architecture | Hub-and-spoke | Mesh | Point-to-point |
+| Transitive Routing | Yes | No | No |
+| Cross-Region | Yes (peering) | Yes | Yes (with gateway) |
+| Bandwidth | Up to 50 Gbps per connection | Up to 100 Gbps | 1-100 Gbps |
+| Setup Complexity | Medium | Low | High |
+| Cost | Pay per attachment and data transfer | Only data transfer | Higher fixed costs |
