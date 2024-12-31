@@ -1,13 +1,8 @@
-# AWS SAA C03
-
-
-## Storage
-
-### S3
-#### Overview
+# S3
+## Overview
 - Amazon S3 is one of the main building blocks of AWS
 
-#### Use cases
+## Use cases
 - Backup and Storage
 - Disaster Recovery
 - Archive
@@ -18,13 +13,13 @@
 - Software delivery
 - Static website
 
-#### Components
-##### Buckets
+## Components
+### Buckets
 - As root directories
 - Must have a globally unique name (across all regions all accounts)
 - Buckets are defined at the region level
 
-##### Objects
+### Objects
 - As a file
 - Have a key as a FULL path
 - There's no concept of directories within buckets (although the UI will trick you to think otherwise)
@@ -37,11 +32,11 @@
     - Unicode key/value pair - up to 10 (useful for security/lifecycle)
   - Version ID (If versioning is enabled)
 
-#### Security
-##### User-Based
+## Security
+### User-Based
 - IAM Policies - which API calls should be allowed for a specific user from IAM
 
-##### Resource-Based
+### Resource-Based
 - Bucket Policies
   - Definition
     - bucket wide rules from the S3 console - allows cross account
@@ -59,29 +54,29 @@
   - finer grain (can be disabled)
 - Bucket Access Control List
 
-##### Note
+### Note
 - an IAM principal can access an S3 object if the user IAM permissions allow it or the resource policy allows it
 - Could encrypt objects in Amazon S3 using encryption keys
 - Configure Bucket Policy Handons
   - use awspolicygen to generate the JSON template to configure S3
   - If you get 403 forbidden error, ensure that the bucket policy allows public reads
 
-#### Versioning
-##### Scope
+## Versioning
+### Scope
 - It is enabled at the bucket level
 
-##### Reasons
+### Reasons
 - Protect against unintended deletes
 - Easy rollback to previous version
 
-##### Notes
+### Notes
 - Any file that is not versioned prior to enabling versioning will have version "null"
 - Suspending versioning does not delete the previous versions
 
-#### Replication
+## Replication
 - Must enable Versioning in source and destination buckets
 
-##### Types
+### Types
 - Cross Region Replication (CRR)
   - Compliance, lower latency access replication across accounts
 - Same Region Replication (SRR)
@@ -91,22 +86,22 @@
 - Copying is asynchronous
 - Must give proper IAM permissions to S3
 
-##### Notes
+### Notes
 - After enabling Replication, only new objects are replicated
   - You can replicate existing objects using S3 Batch Replication (for failed replications as well)
 - Can replicate delete markers from source to target
 - Deletions with a version ID are not replicated (to avoid malicious deletes)
 - There is no chaining of replication
 
-#### Storage Classes
-##### Standard - General Purpose
+## Storage Classes
+### Standard - General Purpose
 - 99.99% Availability
 - Used for frequently accessed data
 - Low latency and high throughput
 - Sustain 2 concurrent facility failures
 - Use cases: Big data analytics, mobile & gaming applications, content distribution...
 
-##### Infrequent Access
+### Infrequent Access
 - Used for less frequently accessed but required rapid access when needed
 - Lower cost than S3 standard
 - S3 Standard - Infrequent Access
@@ -117,7 +112,7 @@
   - 99.5% availability
   - Use cases: Storing secondary backup copies of on-premise data or data you can recreate
 
-##### Glacier
+### Glacier
 - Low-cost object storage meant for archiving/backup
 - Pricing: price for storage + object retrieval cost
 - S3 Glacier Instant Retrieval
@@ -129,12 +124,12 @@
   - Standard (12 hours), bulk (48 hours)
   - Minimum storage duration of 180 days
 
-##### S3 Intelligent Tiering
+### S3 Intelligent Tiering
 - Small monthly monitoring and auto-tiering fee
 - Move objects automatically between Access Tier based on usage
 - There are no retrieval charges in S3 intelligent tiering
 
-##### Lifecycle Rules
+### Lifecycle Rules
 - Transition Actions
   - Description
     - Configuration objects to transition to another storage class
@@ -152,17 +147,17 @@
   - Rules can be created for a certain prefix (example: s3://mybucket/mp3)
   - Rules can be created for certain objects tags (example: Department Finance)
 
-##### Notes:
+### Notes:
 - Can move between classes manually or using S3 Lifecycle configurations
 
-#### S3 Requester Pays
+## S3 Requester Pays
 - In general, bucket owners pay for all Amazon S3 storage and data transfer cost associated with their bucket
 - With requester pays buckets, the requester instead of the bucket owner pays the cost of the request and the data download from the bucket
 - Helpful when you want to share large datasets with other accounts
 - The requester must be authenticated to AWS
 
-#### S3 Event Notifications
-##### Type
+## S3 Event Notifications
+### Type
 - S3:ObjectsCreated
 - S3:ObjectRemoved
 - Object name filtering possible (*.jpg)
@@ -173,7 +168,7 @@
 - Can also configure to send S3 events to SNS, SQS and lambda
   - Need to set up destination's policy to allow S3 notification send message to
 
-#### Baseline Performance
+## Baseline Performance
 - Amazon S3 automatically scales to high request rates (latency 100-200ms)
 - Your application can achieve at least 3500 PUT/COPY/POST/DELETE or 5,500 GET/HEAD requests per second per prefix in a bucket
 - There are no limits to the number of prefixes in a bucket
@@ -181,20 +176,20 @@
   - bucket/prefix/foldername/filename
 - If you spread reads across all four prefixes evenly, you can achieve 22,000 requests per second for GET and HEAD
 
-##### Multi-Part upload
+### Multi-Part upload
 - recommended for files > 100MB, must use for files > 5GB
 - Can help parallelize uploads (speed up transfers)
 
-##### Transfer Acceleration
+### Transfer Acceleration
 - Increase transfer speed by transferring file to an AWS edge location which can forward quickly the data to the S3 bucket in the target region
 - Compatible with multi-part upload
 
-##### Byte-Range Fetches
+### Byte-Range Fetches
 - Parallelize GETs by requesting specific byte ranges
 - Better resilience in case of failures
 - => Can be used to speed up downloads
 
-#### Batch Operations
+## Batch Operations
 - Perform bulk operations on existing S3 objects with a single request
   - Modify object metadata and properties
   - Copy objects between S3 buckets
@@ -206,7 +201,7 @@
 - Batch Operation manages retries, tracks progress, sends completion notifications, generates reports
 - You can use S3 Inventory to get object list and use S3 Select to filter your objects
 
-#### Storage Lens
+## Storage Lens
 - Understand, analyze and optimize storage across entire AWS Organization
 - Discover anomalies, identify cost efficiencies, and apply data protection best practices across entire AWS Organization (30 days usage and activity metrics)
 - Aggregate data for organization, specific accounts regions buckets or prefixes
@@ -232,8 +227,8 @@
     - Advanced Metrics and Recommendations
 - Can be configured to export metrics daily to an S3 bucket
 
-#### Object Encryption
-##### Server-Side Encryption (SSE)
+## Object Encryption
+### Server-Side Encryption (SSE)
 - With Amazon S3-managed keys (SSE - S3) Enabled by Default
   - Encryption using keys handled, managed and owned by AWS
   - Object is encrypted server-side
@@ -258,24 +253,24 @@
   - Encryption key must be provided in HTTP headers, for every HTTP request made
   - To read that files the user needs to provide the keys as well
 
-##### Client-side encryption
+### Client-side encryption
 - Use client libraries such as Amazon S3 Client-Side encryption library
 - Clients must encrypt data themselves before sending to Amazon S3
 - Clients must decrypt data themselves when retrieving from Amazon S3
 - Customer fully manages the keys and encryption cycle
 
-##### Notes
+### Notes
 - Bucket policies are evaluated before default encryption
 - Could force encryption using a bucket policy and refuse any API call to PUT an S3 object without encryption headers (SSE-KMS or SSE-C)
 
-#### S3 CORS
+## S3 CORS
 - If a client makes a cross-origin request on our S3 bucket, we need to enable the correct CORS headers
 - CORS issues usually happen because the objects could be stored in different S3 buckets (=> different URLs)
 - Need to add Access-Control-Allow-Origin to allow this cross buckets access
   - Configuring involves AllowedHeaders, AllowedMethods and AllowedOrigins, ExposeHeaders, MaxAgeSeconds
 
-#### Amazon S3 - MFA Delete
-##### Definition
+## Amazon S3 - MFA Delete
+### Definition
 - force users to generate a code on a device before doing important operations on S3
 
 - MFA will be required to permanently delete an object version
@@ -285,17 +280,17 @@
   - List deleted versions
 - Only the bucket owner(root account) can enable/disable MFA Delete
 
-#### Access Logs
+## Access Logs
 - For audit purpose, you may want to log all access to S3 buckets
 - Any request made to S3, from any account authorized or denied will be logged into another S3 bucket
 - That data can be analyzed using data analysis tools...
 - The target logging bucket must be in the same AWS region
 
-##### Warnings
+### Warnings
 - Do not set your logging bucket to be the monitored bucket
 - It will create a logging loop and your bucket will grow exponentially
 
-#### Pre-signed URLs
+## Pre-signed URLs
 - Generate pre-signed URLs using S3 console, AWS CLI or SDK
 - Users given a pre-signed URL inherit the permissions of the user that generated the URL for GET/PUT
 - Use cases
@@ -303,13 +298,13 @@
   - Allow an ever-changing list of users to download files by generating URLs dynamically
   - Allow temporarily a user to upload a file to a precise location in your S3 bucket
 
-#### Glacier Vault Lock
+## Glacier Vault Lock
 - Adopt a WORM (Write Once Read Many) model
 - Create a Vault Lock Policy
 - Lock the policy for future edits (can no longer be changed or deleted)
 - Helpful for compliance and data retention
 
-#### S3 Object Lock
+## S3 Object Lock
 - Versioning must be enabled
 - Adopt a WORM
 - Block an object version deletion for a specified amount of time
@@ -326,7 +321,7 @@
   - Protect the object indefinitely, independent from retention period
   - Can be freely placed and removed using the s3:PutObjectLegalHold IAM permission
 
-#### Access Points
+## Access Points
 - Manage the permissions of group of people or departments
 - Configure via Policy setup
 - Each access point has its own DNS name
@@ -335,22 +330,22 @@
 - You must create a VPC Endpoint to access the Access Point
 - The VPC Endpoint Policy must allow access to the target bucket and Access Point
 
-#### S3 Object Lambda
+## S3 Object Lambda
 - Use AWS Lambda Functions to change the object before it is retrieved by the caller application
 - Only one S3 bucket is needed, on top of which we create S3 Access Point and S3 Object Lambda Access Points
 - Use cases
   - Converting data format
   - Resizing and watermarking images on the fly using caller-specific details, such as the user who requested the object
 
-### EBS
-#### Overview
+# EBS
+## Overview
 - Network USB Stick
 - EBS could attach to 1 EC2 instance at 1 time
 - Could configure to terminate together with EC2 or not
 - One EC2 instance could attach multiple EBS
 - Must be in the same AZ with EC2
 
-#### EBS Snapshots
+## EBS Snapshots
 - Make a backup of EBS volume at a point in time
 - Not necessary to detach volume to do snapshot, but recommend
 - Can copy snapshot across AZ or Region
@@ -361,7 +356,7 @@
   - Fast snapshot restore
   - Force to install all from snapshot
 
-#### EBS Volume Types
+## EBS Volume Types
 - gp2/gp3 (SSD)
   - General purpose SSD volume that balances price and performance for a wide variety of workloads (Can be root volume)
 - io1/io2 (SSD)
@@ -371,28 +366,28 @@
 - sc1 (HDD)
   - lowest cost HDD volume designed for less frequently accessed workloads
 
-### EFS
-#### Overview
+# EFS
+## Overview
 - Network file system for Linux instances, POSIX filesystem
 
-### EC2 Instance Store
+# EC2 Instance Store
 - EBS volumes are network drives with good but limited performance
 - If you need a high performance hardware disk, use EC2 instance store
 
-#### Use cases
+## Use cases
 - Significantly better for I/O performance
 - EC2 Instance Store lose their storage if they are stopped
 - Good for buffer scale/scratch data/ temporary content
 - Risk of data loss if hardware fails
 - Backup and Replication are your responsibility
 
-### FSx
-#### Overview
+# FSx
+## Overview
 - Launch 3rd party high-performance file systems on AWS
 - Fully managed service
 
-#### Types
-##### Windows File Server
+## Types
+### Windows File Server
 - Can be mounted to Linux EC2 instance
 - Supports SMB protocol and Windows NTFS
 - Microsoft Active Directory integrations, ACLs, user quotas
@@ -405,7 +400,7 @@
 - Can be configured to be Multi-AZ (high availability)
 - Data is backed-up daily to S3
 
-##### Lustre
+### Lustre
 - Overview
   - Is a type of parallel distributed file system, for large-scale computing
   - The name Lustre is derived from "Linux" and "cluster"
@@ -432,7 +427,7 @@
     - Replace failed files within minutes
     - Usage: long term processing, sensitive data
 
-##### NetApp ONTAP
+### NetApp ONTAP
 - Overview
   - Managed NetApp ONTAP on AWS
   - File System compatible with NFS, SMB, iSCSI protocol
@@ -448,7 +443,7 @@
   - Snapshots replication low-cost compression and data de-duplication
   - Point-in-time instantaneous cloning (helpful for testing new workloads)
 
-##### OpenZFS
+### OpenZFS
 - managed OpenZFS file system on AWS
 - File System compatible with NFS
 - Move workloads running on ZFS to AWS
@@ -462,26 +457,26 @@
   - Up to 1mil IOPS with < 0.5ms latency
   - Point-in-time instantaneous cloning (helpful for testing new workloads)
 
-### Snowball
-#### Overview
+# Snowball
+## Overview
 - A offline service that allows users to transfer large amounts of data to their AWS cloud, even in areas with limited or no network connectivity. It's useful for businesses that collect data in remote locations, such as those in the architecture construction, energy and gaming industries
 
-#### Types
+## Types
 - Snowcone
   - 8 TB HDD -> 14 TB SSD
 - Snowball Edge
   - 80TB-210TB
 
-#### Edge computing
+## Edge computing
 - Process data while it's being created on an edge location
 
-#### How it works
+## How it works
 1. Order the device via AWS management console
 2. Receive and copy data
 3. Ship back
 4. Data Import by AWS
 
-#### Variants
+## Variants
 - Snowball Edge Storage Optimized
   - Primarily for bulk data transfer and storage
 - Snowball Edge Compute Optimized
@@ -489,14 +484,14 @@
 - Snowcone
   - A smaller, more portable device for small-scale data transfers edge computing
 
-### AWS Storage Gateway
-#### Overview
+# AWS Storage Gateway
+## Overview
 - Hybrid cloud storage that bridges your on-premises infrastructure with AWS storage services
 
-#### Use cases
+## Use cases
 - Enables you to use AWS cloud storage for backups, archiving, and data tiering while keeping your on-premises applications running seamlessly
 
-#### Types
+## Types
 - File Gateway
   - Provides an interface for applications to access files via standard protocols like NFS or SMB
   - Data is stored in Amazon S3 as objects
@@ -507,156 +502,8 @@
   - Cached mode: Frequently accessed data is cached locally with all data stored in S3
   - Store mode: Entire dataset is stored on-premises, with backups sent to EBS
 
-### AWS Data Sync
+# AWS Data Sync
 - Move large amount of data to and from on-premises/other cloud to AWS (need agents). Or AWS to AWS (different storage services) - no agent needed.
 - Can synchronize to S3 (any storage class - including Glacier), Amazon EFS
 - Replication task can be scheduled hourly, daily or weekly
 - File permissions and metadata are preserved (NFS POSIX, SMB,...)
-
-## Networking
-
-### ELB
-
-
-### Route 53
-#### Overview
-- a domain registrar
-  - Allow you to buy new domain like other provider i.e GoDaddy
-- the only service has 100% SLA
-- Ability check health for resources
-- is a global service
-
-#### Configuration Fields
-##### Domain/Sub Domain Name
-
-##### Record Type
-- A
-  - maps a hostname to IPv4
-  - Alias to an Internal AWS Services
-    - Work for both root domains and non root domains
-    - Maps a hostname to an AWS resource
-    - Automatically recognizes changes in the resource's IP address
-    - Can't set the TTL
-    - Targets
-      - Elastic Load Balancers
-      - CloudFront Distributions
-      - API Gateway
-      - S3 websites
-      - VPC Interface Endpoints
-      - CANNOT set ALIAS RECORD for EC2 DNS name
-- AAAA
-  - maps a hostname to IPv6
-- CNAME
-  - maps a hostname to another hostname
-  - Can't create a CNAME record for top node of a DNS namespace
-    - It means that we cannot create CNAME record for root domain
-- NS
-  - Name servers for the hosted Zone
-  - Control how traffic is routed for a domain
-  - In case you buy domain from another 3rd party provider (i.e GoDaddy, could configure NS records on their sites to use Route 53 Name Servers)
-
-##### Routing Policy
-- Define how Route53 responds to DNS queries
-- Supported Routing Policy
-  - Simple
-    - Route traffic to a single resource
-    - Can specify multiple values in the same record
-      - If multiple values are returned, a RANDOM one is chosen by the client
-    - When alias enabled, specify only one AWS resource
-    - Can't be associated with health check
-  - Weighted
-    - Control the percentage of the requests that go to each specific resource
-    - Assign each record a relative weight. Weights don't need to sum up to 100
-    - Use cases: Load balancing between regions, testing new application versions
-    - Assign a weight of 0 to a record to stop sending traffic to a resource
-    - If all records have weight of 0, then all records will be returned equally
-  - Latency-based
-    - Redirect to the resource that has the least latency close to us
-    - **Latency is based on traffic between users and AWS Regions**
-    - Germany users may be directed to the US (if that's the lowest latency)
-    - Can be associated with health checks
-  - Failover (Active-Passive)
-    - There are many A/AAAA records with associated health checks From top to down, if the health check of the first A record fail, Route53 returns the next record in the list of failover records
-  - Geolocation
-    - This routing is based on user location (different from Latency-based)
-    - Specify location by Continent, Country or by US State
-    - Should create a default record in case there's no match on location
-    - Can be associated with health checks
-    - Useful in case prohibit users from specific country from accessing
-  - Geoproximity
-    - To shift more traffic to AWS regions or lat&long based on associated defined biases
-  - IP-based Routing
-    - Routing is based on clients' IP addresses
-    - You provide a list of CIDRs for your clients and the corresponding endpoints/locations (user IP to endpoint mapping)
-  - Multi-Value
-    - Routing traffic to multiple resources
-    - Route53 returns multiple values/resources
-    - Can be associated with Health Checks (return only values for healthy resources)
-    - Up to 8 healthy records are returned for each Multi-value query
-    - Multi-Value is not a substitute for having an ELB
-
-##### TTL
-- The time for the client to cache the DNS result to avoid spamming to DNS resolver
-
-#### Hosted Zones
-- Public Hosted Zones
-  - Contains records that specify how to route traffic on the Internet
-- Private Hosted Zones
-  - contain records that specify how you route traffic within one or more VPCs (private domain names)
-  - Just allow private resources within a VPC access
-
-#### Cost
-- Pay 0.5$ per month per hosted zone
-- Extra cost per number of requests
-
-#### Tools
-##### Commands
-- nslookup: To find the associated IP with a domain
-- dig: Show more information like TTL
-
-#### Health Checks
-- Only for public resources
-- Types
-  - Monitor an Endpoint
-    - About 15 global health checkers will check the endpoint health
-      - Interval 30 seconds (can set to 10 sec - higher cost)
-      - Support HTTP, HTTPS and TCP
-      - If >18% of health checkers report the endpoint is healthy, Route53 considers it Healthy.
-      - Ability to choose which locations you want Route53 to use
-    - Pass for 2xx and 3xx status codes
-    - Health Checkers can be setup to pass/fail based on the first 5012 bytes of the response
-    - Need to configure router/firewall to allow incoming requests from Route53 Health Checkers
-  - Calculated health checks
-    - Combine the results of multiple Health Checks into a single Health Check
-    - Support logic like **or**, **and**, **not**.
-    - Up to 256 child health checks
-    - Specify how many of the health checks need to pass to make the parent pass
-  - CloudWatch Metric and Alarm
-    - Create health checks based on CloudWatch's alarms
-
-### CloudFront
-#### Overview
-- Content Delivery Network
-- Improve read performance, content is cached at the edge
-- Improve user experiences
-- 216 Point of Presence globally (edge locations)
-- DDoS protections, integration with Shield, AWS Web Application Firewall.
-
-#### Origins
-- EC2 or ALB
-- S3 bucket
-  - For distributing files and caching them at the edge
-  - Enhance security with CloudFront Origin Access Control (OAC)
-  - CloudFront could be used as an ingress to upload file to S3
-- Custom Origin (HTTP)
-  - Application Load Balancer
-  - EC2 Instance
-  - S3 website
-  - Any HTTP backend you want
-
-#### Geo Restriction
-- You can restrict who can access your distribution
-  - Blocklist
-    - Prevent your users from accessing your content if they're in one of the countries on a list of banned countries
-  - AllowList
-    - Allow your users to access your content only if they're

@@ -1,3 +1,154 @@
+# Route 53
+## Overview
+- a domain registrar
+  - Allow you to buy new domain like other provider i.e GoDaddy
+- the only service has 100% SLA
+- Ability check health for resources
+- is a global service
+
+## Configuration Fields
+### Domain/Sub Domain Name
+
+### Record Type
+- A
+  - maps a hostname to IPv4
+  - Alias to an Internal AWS Services
+    - Work for both root domains and non root domains
+    - Maps a hostname to an AWS resource
+    - Automatically recognizes changes in the resource's IP address
+    - Can't set the TTL
+    - Targets
+      - Elastic Load Balancers
+      - CloudFront Distributions
+      - API Gateway
+      - S3 websites
+      - VPC Interface Endpoints
+      - CANNOT set ALIAS RECORD for EC2 DNS name
+- AAAA
+  - maps a hostname to IPv6
+- CNAME
+  - maps a hostname to another hostname
+  - Can't create a CNAME record for top node of a DNS namespace
+    - It means that we cannot create CNAME record for root domain
+- NS
+  - Name servers for the hosted Zone
+  - Control how traffic is routed for a domain
+  - In case you buy domain from another 3rd party provider (i.e GoDaddy, could configure NS records on their sites to use Route 53 Name Servers)
+
+### Routing Policy
+- Define how Route53 responds to DNS queries
+- Supported Routing Policy
+  - Simple
+    - Route traffic to a single resource
+    - Can specify multiple values in the same record
+      - If multiple values are returned, a RANDOM one is chosen by the client
+    - When alias enabled, specify only one AWS resource
+    - Can't be associated with health check
+  - Weighted
+    - Control the percentage of the requests that go to each specific resource
+    - Assign each record a relative weight. Weights don't need to sum up to 100
+    - Use cases: Load balancing between regions, testing new application versions
+    - Assign a weight of 0 to a record to stop sending traffic to a resource
+    - If all records have weight of 0, then all records will be returned equally
+  - Latency-based
+    - Redirect to the resource that has the least latency close to us
+    - **Latency is based on traffic between users and AWS Regions**
+    - Germany users may be directed to the US (if that's the lowest latency)
+    - Can be associated with health checks
+  - Failover (Active-Passive)
+    - There are many A/AAAA records with associated health checks From top to down, if the health check of the first A record fail, Route53 returns the next record in the list of failover records
+  - Geolocation
+    - This routing is based on user location (different from Latency-based)
+    - Specify location by Continent, Country or by US State
+    - Should create a default record in case there's no match on location
+    - Can be associated with health checks
+    - Useful in case prohibit users from specific country from accessing
+  - Geoproximity
+    - To shift more traffic to AWS regions or lat&long based on associated defined biases
+  - IP-based Routing
+    - Routing is based on clients' IP addresses
+    - You provide a list of CIDRs for your clients and the corresponding endpoints/locations (user IP to endpoint mapping)
+  - Multi-Value
+    - Routing traffic to multiple resources
+    - Route53 returns multiple values/resources
+    - Can be associated with Health Checks (return only values for healthy resources)
+    - Up to 8 healthy records are returned for each Multi-value query
+    - Multi-Value is not a substitute for having an ELB
+
+### TTL
+- The time for the client to cache the DNS result to avoid spamming to DNS resolver
+
+## Hosted Zones
+- Public Hosted Zones
+  - Contains records that specify how to route traffic on the Internet
+- Private Hosted Zones
+  - contain records that specify how you route traffic within one or more VPCs (private domain names)
+  - Just allow private resources within a VPC access
+
+## Cost
+- Pay 0.5$ per month per hosted zone
+- Extra cost per number of requests
+- S3 ingress: free
+- S3 to internet: 0.09$ per GB
+- S3 Transfer Acceleration:
+    - Faster transfer times (50 to 500% better)
+    - Additional cost on top of Data Transfer Pricing: +0.04$ to 0.08$ per GB
+- S3 to CloudFront: 0.00$ per GB
+- CloudFront to Internet: 0.085$ per GB (Reduce costs associated with S3 Request Pricing 7x cheaper with CloudFront)
+- S3 Cross Region Replication: 0.02$ per GB
+
+## Tools
+### Commands
+- nslookup: To find the associated IP with a domain
+- dig: Show more information like TTL
+
+## Health Checks
+- Only for public resources
+- Types
+  - Monitor an Endpoint
+    - About 15 global health checkers will check the endpoint health
+      - Interval 30 seconds (can set to 10 sec - higher cost)
+      - Support HTTP, HTTPS and TCP
+      - If >18% of health checkers report the endpoint is healthy, Route53 considers it Healthy.
+      - Ability to choose which locations you want Route53 to use
+    - Pass for 2xx and 3xx status codes
+    - Health Checkers can be setup to pass/fail based on the first 5012 bytes of the response
+    - Need to configure router/firewall to allow incoming requests from Route53 Health Checkers
+  - Calculated health checks
+    - Combine the results of multiple Health Checks into a single Health Check
+    - Support logic like **or**, **and**, **not**.
+    - Up to 256 child health checks
+    - Specify how many of the health checks need to pass to make the parent pass
+  - CloudWatch Metric and Alarm
+    - Create health checks based on CloudWatch's alarms
+
+# CloudFront
+## Overview
+- Content Delivery Network
+- Improve read performance, content is cached at the edge
+- Improve user experiences
+- 216 Point of Presence globally (edge locations)
+- DDoS protections, integration with Shield, AWS Web Application Firewall.
+
+## Origins
+- EC2 or ALB
+- S3 bucket
+  - For distributing files and caching them at the edge
+  - Enhance security with CloudFront Origin Access Control (OAC)
+  - CloudFront could be used as an ingress to upload file to S3
+- Custom Origin (HTTP)
+  - Application Load Balancer
+  - EC2 Instance
+  - S3 website
+  - Any HTTP backend you want
+
+## Geo Restriction
+- You can restrict who can access your distribution
+  - Blocklist
+    - Prevent your users from accessing your content if they're in one of the countries on a list of banned countries
+  - AllowList
+    - Allow your users to access your content only if they're
+
 # API Gateway
 
 ## Overview
@@ -164,7 +315,7 @@
 | /28          | 16 (2^4)       | Small subnet     |192.168.0.0 -> 192.168.0.15
 | /24          | 256 (2^8)     | Standard subnet  |192.168.0.0 -> 192.168.0.255
 | /20          | 4,096    | Large subnet     |192.168.0.0 -> 192.168.16.255
-| /16          | 65,536   | Entire VPC       |192.168.0.0 -> 192.168.255.255
+| /16 (MAXIMUM VALUE IN AWS VPC)          | 65,536   | Entire VPC       |192.168.0.0 -> 192.168.255.255
 | /0           |   All    | All VPC | -
 
 ##### Important Notes for AWS SAA-C03
@@ -173,6 +324,8 @@
 - Cannot change VPC CIDR block size after creation
 - Each subnet must be within VPC CIDR block
 - Reserve first 4 and last IP address in each subnet (AWS requirement)
+- THIS IS THE MOST SECURE WAY OF ENSURING ONLY THE ALB CAN ACCESS THE EC2 INSTANCES. Referencing by security groups in rules is an extremely powerful rule and many questions at the exam rely on it. Make sure you fully master the concepts behind it!
+
 
 ### Private IP
 - The Internet Assigned Numbers Authority (IANA) established certain blocks of IPv4 addresses for the use of private (LAN) and public (Internet addresses).
@@ -181,6 +334,29 @@
     - 172.16.0.0 - 172.31.255.255 <- AWS default VPC in that range
     - 192.168.0.0 - 192.168.255.255 <- home networks
 - All the rest of the IP addresses on the Internet are Public.
+
+### IPv6
+- IPv6 is the latest version of the Internet Protocol (IP)
+- Designed to solve IPv4 address exhaustion
+- Format: eight groups of four hexadecimal digits (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334)
+- Total length: 128 bits (compared to 32 bits in IPv4)
+
+#### IPv6 in AWS VPC
+- VPCs can operate in dual-stack mode (IPv4 + IPv6)
+- AWS assigns IPv6 CIDR block from Amazon's pool of IPv6 addresses
+- Size of IPv6 CIDR block is fixed at /56
+- Subnets can be assigned a /64 CIDR block
+- IPv6 addresses are globally unique and public by default
+
+#### Key Differences from IPv4
+| Feature | IPv4 | IPv6 |
+|---------|------|------|
+| Address Length | 32-bit | 128-bit |
+| Address Format | Decimal with dots | Hexadecimal with colons |
+| Private Addresses | Yes (RFC 1918) | No (uses unique local addresses) |
+| CIDR Block Size | Variable | Fixed (/56 for VPC, /64 for subnet) |
+| NAT Support | Yes | Not needed (all IPs are public) |
+
 
 ## Overview
 - Virtual Private Cloud
@@ -298,6 +474,11 @@ Destination     Target
 ### Limitations
 - One IGW per VPC
 - Cannot attach to multiple VPCs
+
+### Notes
+If the EC2 instance does not have a public IP, it cannot communicate directly with the internet, even if the Internet Gateway is attached to the VPC and the route table allows access. This is because:
+A public IP is necessary for the instance to be addressable over the internet.
+Without a public IP, the instance has no globally routable address, and any outbound traffic will not have a return path.
 
 ## Bastion Hosts
 A Bastion Host (also known as Jump Box) is a server used to manage access to internal or private networks from an external network (usually the internet).
@@ -760,6 +941,7 @@ VPC Endpoints allow you to privately connect your VPC to supported AWS services 
 - Takes months to establish the connection
 - Data travels over private network (not internet)
 - More expensive than Site-to-Site VPN but better performance
+- Using a Direct Connect connection, you CAN ACCESS BOTH public and private AWS resources.
 
 ### Connection Types
 1. **Dedicated Connection**
@@ -872,7 +1054,8 @@ VPC Endpoints allow you to privately connect your VPC to supported AWS services 
 • You can peer Transit Gateways across regions
 • Route Tables: limit which VPC can talk with other VPC
 • Works with Direct Connect Gateway, VPN connections
-• Supports IP Multicast (not supported by any other AWS service)
+• SUPPORTS IP MULTICAST (NOT SUPPORTED BY ANY OTHER AWS SERVICE)
+=> Useful to broadcast or transmit from Direct Connect or VPN connections to multiple VPCs.
 
 ## Key Features
 
@@ -941,6 +1124,66 @@ Application VPCs → Transit Gateway → Shared Services VPC
 - Extend corporate network
 - Consistent connectivity
 
+## ECMP Support
+- ECMP (Equal-cost multi-path routing) enables traffic to be distributed across multiple paths
+- Supports multiple VPN tunnels for increased bandwidth
+- Each VPN tunnel supports up to 50 Gbps
+- With 2 VPN tunnels, you can achieve 100 Gbps throughput
+- Provides both increased bandwidth and high availability
+- Automatically load balances traffic across available paths.
+
+### What is ECMP?
+ECMP is like having multiple highways between two cities and being able to use all of them simultaneously to reduce traffic congestion. Instead of all traffic going through one path, it's distributed across multiple equal-cost paths.
+
+### Key Points About ECMP in AWS Transit Gateway:
+
+1. **Basic Concept**
+```plaintext
+                    Path A (VPN Tunnel 1) - 50 Gbps
+Source ----TGW ---- Path B (VPN Tunnel 2) - 50 Gbps ---- Destination
+                    Path C (VPN Tunnel 3) - 50 Gbps
+```
+
+2. **Benefits**
+- **Higher Bandwidth**: Each path adds 50 Gbps, so 2 paths = 100 Gbps total
+- **Load Balancing**: Traffic is automatically distributed
+- **Fault Tolerance**: If one path fails, others continue working
+
+3. **Real-World Example**
+```plaintext
+Corporate Office ─────┐
+                     │    VPN Tunnel 1 (50 Gbps)
+                     ├─── VPN Tunnel 2 (50 Gbps) ─── AWS Transit Gateway
+                     │    VPN Tunnel 3 (50 Gbps)
+Data Center ─────────┘
+```
+
+### How ECMP Works:
+
+1. **Traffic Distribution**
+- Splits network traffic across multiple paths
+- Uses factors like source/destination IP to determine path
+- All paths must have the same cost (speed/priority)
+
+2. **Automatic Failover**
+```plaintext
+Before Failure:
+Path A: 33% traffic
+Path B: 33% traffic
+Path C: 33% traffic
+
+After Path A Fails:
+Path A: 0% (failed)
+Path B: 50% traffic
+Path C: 50% traffic
+```
+
+3. **Use Cases**
+- High-bandwidth applications
+- Critical business applications needing redundancy
+- Large data transfers
+- Streaming services
+
 ## Limitations
 - Regional resource (but can peer across regions)
 - Maximum bandwidth per VPC connection: 50 Gbps
@@ -987,3 +1230,156 @@ Application VPCs → Transit Gateway → Shared Services VPC
 | Bandwidth | Up to 50 Gbps per connection | Up to 100 Gbps | 1-100 Gbps |
 | Setup Complexity | Medium | Low | High |
 | Cost | Pay per attachment and data transfer | Only data transfer | Higher fixed costs |
+
+## VPC Traffic Mirroring
+- Capture and inspect network traffic in your VPC.
+- Route this traffic to your security appliances.
+- Capture traffic from specific sources (ENIs).
+- Need to specify targets, such as an ENI or a Network Load Balancer.
+- Capture all packets or only the packets you are interested in (and choose to shorten them if needed).
+- Both the source and target can be in the same VPC or in different VPCs (using VPC Peering).
+- Some common uses include checking content, monitoring for threats, and troubleshooting.
+
+## Egress-only Internet Gateway
+- IPv6 only (similar to NAT Gateway but for IPv6)
+- Allows outbound IPv6 communication but prevents inbound access
+- Must update route tables
+- Stateful: automatically allows response traffic
+- No additional cost (free service)
+- Highly available across all AZs in region
+- Common use case: Private IPv6 instances that need to initiate outbound connections but prevent inbound access
+
+## VPC Classic Link
+ClassicLink allows Amazon Elastic Compute Cloud (EC2) instances in the EC2-Classic platform to communicate with instances in a VPC using private IP addresses.
+
+## AWS Network Firewall
+AWS Network Firewall is a managed firewall service that makes it easy to deploy essential network protections for all of **your Amazon Virtual Private Clouds (VPCs)**.
+
+## AWS VPN CloudHub
+AWS VPN CloudHub allows you to securely communicate with multiple sites using AWS VPN. It operates on a simple hub-and-spoke model that you can use with or without a VPC.
+
+### Key Features
+1. **Firewall Rules**
+   - Stateful inspection
+   - Intrusion Prevention System (IPS)
+   - Web filtering
+   - Protocol detection
+   - Custom rule creation
+   - Support for Suricata-compatible rules
+
+2. **Traffic Filtering**
+   - Filter by IP address
+   - Filter by port
+   - Filter by protocol
+   - Domain name filtering
+   - Pattern matching with regex
+
+3. **High Availability**
+   - Automatically deployed across multiple AZs
+   - Scales automatically with your traffic
+   - No maintenance or patching required
+
+### Architecture Components
+1. **Firewall**
+   - VPC level protection
+   - Deployed in its own VPC
+   - Multiple firewall endpoints
+
+2. **Firewall Policy**
+   - Collection of rule groups
+   - Stateful and stateless rules
+   - Rule order matters
+
+3. **Rule Groups**
+   - Reusable collections of rules
+   - Can be shared across accounts
+   - Managed or custom rules
+
+### Common Use Cases
+1. **Network Security**
+   ```plaintext
+   Internet → Network Firewall → VPC Resources
+   ```
+   - Filter inbound/outbound traffic
+   - Block malicious IP addresses
+   - Prevent data exfiltration
+
+2. **Application Protection**
+   ```plaintext
+   User → Network Firewall → Application
+   ```
+   - Filter HTTP/HTTPS traffic
+   - Block unwanted domains
+   - Protect web applications
+
+3. **Compliance Requirements**
+   - Log all network traffic
+   - Enforce security policies
+   - Meet regulatory requirements
+
+### Integration with AWS Services
+1. **VPC**
+   - Protect multiple VPCs
+   - Cross-account protection
+   - VPC routing integration
+
+2. **CloudWatch**
+   - Metrics and logging
+   - Alert on security events
+   - Performance monitoring
+
+3. **AWS Firewall Manager**
+   - Centralized management
+   - Multi-account deployment
+   - Policy enforcement
+
+### Best Practices
+1. **Design**
+   - Deploy in dedicated security VPC
+   - Use multiple AZs
+   - Plan capacity based on traffic
+
+# AWS VPC Costing Overview
+
+| Component | Pricing Model | Typical Cost Range (US regions) | Notes |
+|-----------|--------------|--------------------------------|--------|
+| VPC Gateway Endpoint | Free | $0 | For S3 and DynamoDB only |
+| VPC Interface Endpoint | $0.01/hour + $0.01/GB data processed | ~$7.50/month + data transfer | Per endpoint per AZ |
+| NAT Gateway | $0.045/hour + $0.045/GB data processed | $32.40/month + data transfer | Per NAT Gateway |
+| NAT Instance | EC2 instance cost + data transfer | From $8/month + data transfer | t3.nano example |
+| Transit Gateway | $0.05/hour + $0.02/GB data processed | $36/month + data transfer | Per attachment |
+| Site-to-Site VPN | $0.05/hour | $36/month | Per connection |
+| Direct Connect | From $0.30/hour | From $219/month | 1Gbps dedicated connection |
+| Internet Gateway | Free for gateway, pay for data transfer | $0 + $0.09/GB data transfer | Data transfer out to internet |
+| VPC Peering | Free for peering, pay for data transfer | $0.01/GB | Inter-region data transfer |
+| Load Balancer | From $0.0225/hour + $0.008/GB | ~$16.20/month + data transfer | Application
+
+## AWS Network Data Transfer Costs
+
+### Free Data Transfer
+- Inbound data transfer (ingress) from internet to AWS
+- Data transfer between EC2 instances in the same AZ using private IP
+- Data transfer from AWS to CloudFront
+- Data transfer between services within same region using private IP
+
+### Chargeable Data Transfer
+1. **Internet Egress (Out to Internet)**
+   - Charged per GB, tiered pricing
+   - More expensive than internal transfer
+   - Varies by region
+
+2. **Inter-Region Transfer**
+   - Data transfer between AWS regions
+   - Charged both source and destination regions
+   - Less expensive than internet egress
+
+3. **Inter-AZ Transfer**
+   - Data transfer between AZs in same region
+   - Charged per GB
+   - Less expensive than inter-region transfer
+
+### Cost Optimization Tips
+1. **Keep traffic in same AZ when possible** (But the Resiliency is reduced then. Need to consider carefully.)
+2. **Use CloudFront to reduce egress costs** (CloudFront has slightly price than S3)
+3. **Use private IP addresses instead of public IPs**
+4. **Consider data transfer costs when choosing regions**
