@@ -1384,3 +1384,12 @@ AWS VPN CloudHub allows you to securely communicate with multiple sites using AW
 2. **Use CloudFront to reduce egress costs** (CloudFront has slightly price than S3)
 3. **Use private IP addresses instead of public IPs**
 4. **Consider data transfer costs when choosing regions**
+
+# Other Services
+## Elastic Network Adapter (ENA)
+Elastic Network Adapter is a high-performance network interface for Amazon EC2 instances that supports **enhanced networking capabilities**. 
+It provides low-latency and high-bandwidth networking, supporting up to **100 Gbps** throughput for instances that require significant data transfer rates.
+
+## Elastic Fabric Adapter (EFA)
+Elastic Fabric Adapter is a network interface designed for Amazon EC2 instances to **run high-performance computing (HPC)** and machine learning workloads.
+It provides low-latency, high-throughput communication using the **Message Passing Interface** (MPI) and enables tightly coupled parallel workloads to scale efficiently.
