@@ -164,7 +164,7 @@
 - Use case: generate thumbnails of images uploaded to S3
 - Can create as many S3 events as desired
 - Asynchronous events
-- Amazon EventBridge support delivering all messages to over 18 AWS services as destinations
+- Usually go to Amazon EventBridge, Amazon EventBridge supports delivering all messages to over 18 AWS services as destinations.
 - Can also configure to send S3 events to SNS, SQS and lambda
   - Need to set up destination's policy to allow S3 notification send message to
 
@@ -507,3 +507,4 @@
 - Can synchronize to S3 (any storage class - including Glacier), Amazon EFS
 - Replication task can be scheduled hourly, daily or weekly
 - File permissions and metadata are preserved (NFS POSIX, SMB,...)
+- Ideal for datasets up to 100TB (bigger ones should be handled by Snowball).

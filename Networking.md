@@ -145,7 +145,7 @@
 ## Geo Restriction
 - You can restrict who can access your distribution
   - Blocklist
-    - Prevent your users from accessing your content if they're in one of the countries on a list of banned countries
+    - Prevent your users **(by IP)** from accessing your content if they're in one of the countries on a list of banned countries
   - AllowList
     - Allow your users to access your content only if they're
 
@@ -589,6 +589,7 @@ Private Subnet → NAT Gateway (Public Subnet) → IGW → Internet
 
 ## Network Access Control Lists (NACLs)
 Network ACLs are an optional layer of security that acts as a firewall for controlling traffic in and out of subnets.
+(Usually used for blocking an IP address, cheaper than using WAF)
 
 ### Key Characteristics
 1. **Subnet Level**
