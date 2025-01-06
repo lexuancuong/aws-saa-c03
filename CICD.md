@@ -242,3 +242,7 @@ aws ec2 create-image \
 - Cannot modify after creation
 - Cannot delete if in use
 - Storage costs for AMIs and snapshots
+
+# Beanstalk
+- AWS Elastic Beanstalk is a fully managed service designed to help developers quickly deploy, manage, and scale web applications and services. It simplifies the deployment process by handling infrastructure provisioning, load balancing, auto-scaling, and monitoring while allowing you to focus on writing code.
+- With Elastic Beanstalk, you can upload your application code (e.g., Java, .NET, Node.js, Python, Ruby, PHP, or Docker), and the service automatically deploys it to a pre-configured environment. You retain full control over the underlying resources, making it a great choice for developers who want flexibility without the complexity of managing infrastructure.

@@ -56,10 +56,11 @@
 |**Ordering**|Best effort – Messages may arrive out of order|Strict – Messages arrive in the exact order they are sent|
 |**Use Case**|Ideal for high throughput applications|Ideal for applications where message order matters|
 
-## Tips for Auto Scaling
+## Tips
 - When the number of EC2 instances (or other processor instances) increases, the transactions to database will be also increased.
-SQS as a buffer to database writes is a good solution for this problem. Because SQS Queue is infinitely scalable.
-This solution is only work if the client isn't impact by latency of writing to DB.
+SQS as a buffer to database writes is a good solution for this problem. Because SQS Queue is infinitely scalable (This solution is only work if the client isn't impact by latency of writing to DB).
+- The name of a FIFO queue must end with the .fifo suffix. The suffix counts towards the 80-character queue name limit. To determine whether a queue is FIFO, you can check whether the queue name ends with the suffix.
+- If you have an existing application that uses standard queues and you want to take advantage of the ordering or exactly-once processing features of FIFO queues, you need to configure the queue and your application correctly. You can't convert an existing standard queue into a FIFO queue. To make the move, you must either create a new FIFO queue for your application or delete your existing standard queue and recreate it as a FIFO queue.
 
 # SNS (Simple Notification Service)
 ## Overview

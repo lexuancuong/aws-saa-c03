@@ -190,10 +190,10 @@ Option 2:
 
 ## Overview
 
-AWS Backup is a fully managed service that simplifies and automates backups across a wide range of AWS services, including Amazon EC2, Amazon RDS, Amazon EBS, and more. 
-It centralizes and automates the backup process, providing a single pane of glass for managing and monitoring backups across your AWS environment.
-AWS Backup is a crucial service for protecting your data and ensuring business continuity in the AWS cloud.
-By centralizing and automating backups, you can significantly reduce the risk of data loss and improve your overall data protection posture.
+- AWS Backup is a fully managed service that simplifies and automates backups across a wide range of AWS services, including Amazon EC2, Amazon RDS, Amazon EBS, and more. 
+- It centralizes and automates the backup process, providing a single pane of glass for managing and monitoring backups across your AWS environment.
+- AWS Backup is a crucial service for protecting your data and ensuring business continuity in the AWS cloud. 
+- By centralizing and automating backups, you can significantly reduce the risk of data loss and improve your overall data protection posture.
 
 ## Supported services
 - EC2/EBS
@@ -237,26 +237,26 @@ By centralizing and automating backups, you can significantly reduce the risk of
 
 # Other Services
 ## AWS Application Discovery Service 
-AWS Application Discovery Service helps you assess your on-premises data center by automatically collecting information about servers, **applications**, and dependencies, enabling streamlined migration planning.
-It provides detailed insights to facilitate workload migration to AWS.
-Resulting data can be viewed within AWS Migration Hub.
+- AWS Application Discovery Service helps you assess your on-premises data center by automatically collecting information about servers, **applications**, and dependencies, enabling streamlined migration planning.
+- It provides detailed insights to facilitate workload migration to AWS.
+- Resulting data can be viewed within AWS Migration Hub.
 
 ## Application Migration Service
-AWS SMS enables incrementally automated migration of on-premises servers to AWS by orchestrating large-scale server migrations efficiently.
-It supports incremental replication, reducing downtime and simplifying the migration process.
+- AWS SMS enables incrementally automated migration of on-premises servers to AWS by orchestrating large-scale server migrations efficiently.
+- It supports incremental replication, reducing downtime and simplifying the migration process.
 
 # Common Problems
 ## Transferring large amount of data into AWS
-Option 1: Over the internet / Site to Site VPN
-- Immediate to setup
-- Take a long time
-Over Direct Connect 1Gbps:
-- Long time setup (over a month)
-- Take less time (10x faster)
-Over Snowball:
-- Will take 2 to 3 snowballs in parallel
-- Take about 1 week for the end to end transfer
-- Can be combined with DMS
+* Option 1: Over the internet / Site to Site VPN
+    - Immediate to setup
+    - Take a long time
+* Over Direct Connect 1Gbps:
+    - Long time setup (over a month)
+    - Take less time (10x faster)
+* Over Snowball:
+    - Will take 2 to 3 snowballs in parallel
+    - Take about 1 week for the end to end transfer
+    - Can be combined with DMS
 
 ## Manage AWS Cloud with VMware
 - Supported by VMware vSphere-based private, public and hybrid cloud environments.

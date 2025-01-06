@@ -446,8 +446,8 @@ It is designed to help developers, DevOps engineers, and system administrators e
 # AWS CloudTrail
 
 ## Overview
-AWS CloudTrail is a service that enables governance, compliance, and operational and risk auditing of your AWS account.
-It records account activity and API calls made in your AWS environment, providing a complete event history for all actions performed via the AWS Management Console, SDKs, CLI, and AWS services.
+- AWS CloudTrail is a service that enables governance, compliance, and operational and risk auditing of your AWS account (for every AWS account - useful for managing many staff in an organization)
+- It records account activity and API calls made in your AWS environment, providing a complete event history for all actions performed via the AWS Management Console, SDKs, CLI, and AWS services.
 
 ---
 

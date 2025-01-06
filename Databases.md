@@ -286,6 +286,9 @@
 - Learn how **automated backups** and **snapshots** work for recovery.
 - Understand cost implications of **Multi-AZ**, **read replicas**, and **storage scaling**.
 
+## Tips
+- Amazon RDS Custom for Oracle facilitates customizations to the underlying Oracle database as well as OS with minimum infrastructure maintenance effort.
+
 ---
 
 # **Amazon Aurora**
@@ -663,6 +666,8 @@
   - Use for: Social networks, recommendation engines, fraud detection
   - Up to 15 read replicas over 3 AZ
   - Automatic failover in < 30 seconds
+  - If the dataset has many relationships (e.g., friendships, likes) and queries frequently involve traversing these relationships.
+  - Graph databases like Neptune are specifically optimized for such scenarios. The query would involve traversing the graph to find "friends of AI", their videos, and then aggregating likes.
 
 ### **Neptune Streams**
 - Real-time ordered sequence of every change to your graph data

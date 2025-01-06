@@ -110,6 +110,7 @@
 - S3 One Zone - Infrequent Access
   - High durability 99.9999999% in a single AZ, data lost when AZ is destroyed
   - 99.5% availability
+  - Minimum duration is 30 days before you can transit objects from S3 standard to S3 one-zone.
   - Use cases: Storing secondary backup copies of on-premise data or data you can recreate
 
 ### Glacier

@@ -130,6 +130,7 @@
 - Computation
 - Memory
 - Networking
+- Can use CloudWatch and EC2 Reboot CloudWatch Alarm Action to monitor and rebooth the EC2
 
 # Lambda
 ## Overview
@@ -290,7 +291,7 @@
   - Serverless - no EC2 instances to manage
   - You just create task definitions
   - AWS runs containers for you based on CPU/RAM you need
-  - Pay for resources allocated to your containers
+  - Amazon ECS with Fargate launch type is charged based on vCPU and memory resources that the containerized application requests
   - Simpler to use, less control, more expensive
 
 ## Key Components
@@ -308,6 +309,8 @@
   - Logical grouping of EC2 instances or Fargate tasks
   - Instances/tasks run the ECS agent
   - Can contain multiple services
+  - Cluster – packs instances close together inside an Availability Zone (AZ). 
+  - This strategy enables workloads to achieve the low-latency network performance necessary for tightly-coupled node-to-node communication that is typical of HPC applications.
 
 
 ## Integration with other AWS Services

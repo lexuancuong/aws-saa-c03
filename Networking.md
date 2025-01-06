@@ -1,6 +1,6 @@
 # Route 53
 ## Overview
-- a domain registrar
+- A domain registrar
   - Allow you to buy new domain like other provider i.e GoDaddy
 - the only service has 100% SLA
 - Ability check health for resources
@@ -519,7 +519,8 @@ Internet → IGW → Bastion Host (Public Subnet) → Private Resources (Private
    ```
 
 ## NAT (Network Address Translation)
-Allows instances in private subnets to access the internet while preventing the internet from initiating connections to these instances.
+### Overview
+- Allows instances in private subnets to access the internet while preventing the internet from initiating connections to these instances.
 (For private resources that only need outbound internet access)
 
 
@@ -588,7 +589,8 @@ Private Subnet → NAT Gateway (Public Subnet) → IGW → Internet
 - Bastion Host is like a security desk (controlled staff entry)
 
 ## Network Access Control Lists (NACLs)
-Network ACLs are an optional layer of security that acts as a firewall for controlling traffic in and out of subnets.
+### Overview
+- Network ACLs are an optional layer of security that acts as a firewall for controlling traffic in and out of subnets.
 (Usually used for blocking an IP address, cheaper than using WAF)
 
 ### Key Characteristics
@@ -680,7 +682,8 @@ Outbound Rules:
    - Consider connection tracking
 
 ## VPC Peering
-VPC Peering is a networking connection between two VPCs that enables routing traffic between them privately using IPv4 or IPv6 addresses.
+### Overview
+- VPC Peering is a networking connection between two VPCs that enables routing traffic between them privately using IPv4 or IPv6 addresses.
 
 ### Key Characteristics
 1. **Connection Properties**
@@ -737,7 +740,8 @@ Destination: VPC A CIDR → Target: pcx-xxxxxx (Peering Connection)
    - Allows private DNS resolution between VPCs
 
 ## VPC Endpoints
-VPC Endpoints allow you to privately connect your VPC to supported AWS services without requiring an Internet Gateway, NAT device, VPN connection, or AWS Direct Connect.
+### Overview
+- VPC Endpoints allow you to privately connect your VPC to supported AWS services without requiring an Internet Gateway, NAT device, VPN connection, or AWS Direct Connect.
 
 ### Main Benefits
 - Improved Security: Traffic stays within AWS network
@@ -1387,9 +1391,16 @@ AWS VPN CloudHub allows you to securely communicate with multiple sites using AW
 
 # Other Services
 ## Elastic Network Adapter (ENA)
-Elastic Network Adapter is a high-performance network interface for Amazon EC2 instances that supports **enhanced networking capabilities**. 
+Elastic Network Adapter is a network interface for Amazon EC2 instances that supports **enhanced networking capabilities**. 
 It provides low-latency and high-bandwidth networking, supporting up to **100 Gbps** throughput for instances that require significant data transfer rates.
 
 ## Elastic Fabric Adapter (EFA)
 Elastic Fabric Adapter is a network interface designed for Amazon EC2 instances to **run high-performance computing (HPC)** and machine learning workloads.
 It provides low-latency, high-throughput communication using the **Message Passing Interface** (MPI) and enables tightly coupled parallel workloads to scale efficiently.
+
+# AWS Global Accelerator
+- AWS Global Accelerator is a networking service that helps you improve the availability and performance of the applications that you offer to your global users. 
+- AWS Global Accelerator is easy to set up, configure, and manage.
+- It provides static IP addresses that provide a fixed entry point to your applications and eliminate the complexity of managing specific IP addresses for different AWS Regions and Availability Zones (AZs).
+- AWS Global Accelerator always routes user traffic to the optimal endpoint based on performance, reacting instantly to changes in application health, your user’s location, and policies that you configure.
+- Global Accelerator is a good fit for non-HTTP use cases, such as gaming (UDP), IoT (MQTT), or Voice over IP.

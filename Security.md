@@ -424,7 +424,8 @@ Flow:
 # AWS WAF (Web Application Firewall)
 
 ## Overview
-AWS WAF is a web application firewall that helps protect web applications from common web exploits (Layer 7) that could affect application availability, compromise security, or consume excessive resources.
+
+- AWS WAF is a web application firewall that helps protect web applications from common web exploits (Layer 7) that could affect application availability, compromise security, or consume excessive resources.
 
 ## Integrations
 - ALB
