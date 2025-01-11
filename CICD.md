@@ -246,3 +246,15 @@ aws ec2 create-image \
 # Beanstalk
 - AWS Elastic Beanstalk is a fully managed service designed to help developers quickly deploy, manage, and scale web applications and services. It simplifies the deployment process by handling infrastructure provisioning, load balancing, auto-scaling, and monitoring while allowing you to focus on writing code.
 - With Elastic Beanstalk, you can upload your application code (e.g., Java, .NET, Node.js, Python, Ruby, PHP, or Docker), and the service automatically deploys it to a pre-configured environment. You retain full control over the underlying resources, making it a great choice for developers who want flexibility without the complexity of managing infrastructure.
+
+# Deployment Strategies
+## comparison
+| **Deployment Strategy**  | **Description**                                                                                   | **Use Case**                                                                            |
+|---------------------------|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| **Recreate Deployment**   | Stops the current version completely before deploying the new version.                           | Simple applications with minimal downtime tolerance.                                   |
+| **Rolling Deployment**    | Gradually replaces instances of the old version with the new version in a controlled sequence.   | Applications needing zero downtime with steady resource utilization.                  |
+| **A/B Testing Deployment**| Deploys two versions simultaneously to different user groups for testing and comparison.         | Testing user behavior and performance for specific features or interfaces.            |
+| **Shadow Deployment**     | Sends live traffic to the new version for testing without affecting end users.                   | Validating new versions under real-world traffic conditions without user impact.       |
+| **Immutable Deployment**  | Deploys the new version in entirely new infrastructure while keeping the old version intact.     | Applications requiring high reliability and instant rollback capabilities.             |
+| **Rolling with Batches**  | Deploys updates to a subset of instances (batches) at a time, progressively replacing all.        | Balancing speed of deployment with stability, particularly for large-scale systems.    |
+| **Elastic Deployment**    | Automatically scales the new version up and the old version down during deployment.              | Applications in environments with auto-scaling and dynamic resource requirements.      |

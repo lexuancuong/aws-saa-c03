@@ -93,6 +93,8 @@
 - S3 Transfer Acceleration:
     - Faster transfer times (50 to 500% better)
     - Additional cost on top of Data Transfer Pricing: +0.04$ to 0.08$ per GB
+    - Amazon S3 Transfer Acceleration (Amazon S3TA) is a bucket-level feature that enables fast, easy, and secure transfers of files over long distances between your client and an Amazon S3 bucket.
+    - You cannot use Transfer Acceleration to copy objects across Amazon S3 buckets in different Regions using Amazon S3 console.
 - S3 to CloudFront: 0.00$ per GB
 - CloudFront to Internet: 0.085$ per GB (Reduce costs associated with S3 Request Pricing 7x cheaper with CloudFront)
 - S3 Cross Region Replication: 0.02$ per GB
@@ -148,6 +150,16 @@
     - Prevent your users **(by IP)** from accessing your content if they're in one of the countries on a list of banned countries
   - AllowList
     - Allow your users to access your content only if they're
+## Signed Cookies
+### Overview
+Signed Cookies in AWS are a feature used to securely deliver private content (e.g., files, videos, or other resources) through Amazon CloudFront.
+They allow users to access restricted content by using a signed URL or a signed cookie to authenticate their request.
+### How it works
+- A trusted signer (e.g., your application) creates a policy defining the access conditions.
+- The policy is signed with a private key from an AWS CloudFront key pair.
+- The signed cookie is sent to the user's browser.
+- The browser includes the signed cookie in requests to access restricted content through CloudFront.
+- CloudFront validates the signature and the policy to allow or deny access.
 
 # API Gateway
 
@@ -321,6 +333,7 @@
 ##### Important Notes for AWS SAA-C03
 - VPC CIDR block must be between /16 and /28
 - CIDR blocks must not overlap between VPCs if you plan to peer them
+- YOU CAN'T HAVE A VPC WITH IPV6 CIDRS ONLY
 - Cannot change VPC CIDR block size after creation
 - Each subnet must be within VPC CIDR block
 - Reserve first 4 and last IP address in each subnet (AWS requirement)
@@ -1388,6 +1401,78 @@ AWS VPN CloudHub allows you to securely communicate with multiple sites using AW
 2. **Use CloudFront to reduce egress costs** (CloudFront has slightly price than S3)
 3. **Use private IP addresses instead of public IPs**
 4. **Consider data transfer costs when choosing regions**
+
+# Elastic Load Balancer (ELB) Overview
+
+## Overview
+- Elastic Load Balancer (ELB) is an AWS-managed service that automatically distributes incoming traffic across multiple targets (e.g., EC2 instances, containers) to improve the availability and fault tolerance of your applications.
+
+## Types of Load Balancers
+
+### 1. **Application Load Balancer (ALB)**
+- **Purpose**: Works at the **application layer (Layer 7)** of the OSI model.
+- **Key Features**:
+  - Content-based routing (e.g., route traffic based on URL path or hostname).
+  - Supports WebSocket, HTTP/HTTPS traffic.
+  - Integrated with AWS WAF for security.
+  - Target groups can include EC2 instances, containers, or Lambda functions.
+
+### 2. **Network Load Balancer (NLB)**
+- **Purpose**: Works at the **transport layer (Layer 4)** of the OSI model.
+- **Key Features**:
+  - Handles high volumes of TCP/UDP traffic.
+  - Low latency and high performance.
+  - Static IP addresses or Elastic IPs.
+  - Best suited for real-time applications like gaming or VoIP.
+
+### 3. **Gateway Load Balancer (GWLB)**
+- **Purpose**: Designed to deploy, scale, and manage third-party virtual appliances.
+- **Key Features**:
+  - Operates at **Layer 3 (Network Layer)**.
+  - Routes traffic to appliance-based solutions (e.g., firewalls, intrusion detection systems).
+
+### 4. **Classic Load Balancer (CLB)** *(Legacy)*
+- **Purpose**: Supports both **Layer 4 and Layer 7** functionality but is considered legacy.
+- **Key Features**:
+  - Basic load balancing for EC2 instances.
+  - Does not support advanced features like host-based routing.
+
+---
+
+## Key Benefits of ELB
+- **High Availability**: Distributes traffic across multiple targets in multiple Availability Zones (AZs).
+- **Scalability**: Automatically scales to handle varying levels of traffic.
+- **Health Checks**: Monitors the health of targets and routes traffic only to healthy instances.
+- **SSL/TLS Termination**: Offloads SSL/TLS decryption to the load balancer, reducing the burden on backend servers.
+- **Integration with AWS Services**: Works seamlessly with Auto Scaling, Route 53, and CloudWatch.
+
+---
+
+## Pricing
+- **ALB**: Charged based on the number of Load Balancer Capacity Units (LCUs) and hours used.
+- **NLB**: Charged based on the number of connections and data processed.
+- **GWLB**: Charged for usage and data processing.
+
+---
+
+## Use Cases
+1. **Web Applications**: Use ALB for routing traffic to microservices or multiple applications.
+2. **Real-Time Applications**: Use NLB for low-latency, high-throughput workloads.
+3. **Third-Party Virtual Appliances**: Use GWLB to manage network traffic through security appliances.
+4. **Basic Load Balancing**: Use CLB for legacy or simple workloads.
+
+---
+
+## Example Architecture
+1. Users access the application via an **Application Load Balancer**.
+2. The ALB routes traffic to EC2 instances in an Auto Scaling group.
+3. Targets in the Auto Scaling group are automatically health-checked by the ELB.
+4. If a target fails, the ELB stops routing traffic to it.
+
+---
+
+Elastic Load Balancers are a core component for building highly available and fault-tolerant architectures on AWS. Understanding their features and use cases is crucial for passing AWS SAA-C03.
+
 
 # Other Services
 ## Elastic Network Adapter (ENA)

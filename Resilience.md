@@ -184,6 +184,8 @@ Option 1:
 Option 2:
 - Create an Aurora MySQL DB
 - Dump the data and restore in Aurora (Slower than S3 method)
+
+### Migrate from S3 to many kind of databases
 **Use DMS if both databases are up and running**
 
 # AWS Backup

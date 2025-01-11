@@ -124,6 +124,9 @@
 - S3 Glacier Deep Archive
   - Standard (12 hours), bulk (48 hours)
   - Minimum storage duration of 180 days
+- NOTES: YOU DON’T HAVE TO CONFIGURE THE S3 LIFECYCLE POLICY AND WAIT FOR 30 DAYS TO MOVE THE DATA TO **GLACIER DEEP ARCHIVE**. Other storage classes still require.
+
+
 
 ### S3 Intelligent Tiering
 - Small monthly monitoring and auto-tiering fee
@@ -337,6 +340,15 @@
 - Use cases
   - Converting data format
   - Resizing and watermarking images on the fly using caller-specific details, such as the user who requested the object
+
+## S3 Bucket Policy
+- Bucket policies in Amazon S3 can be used to add or deny permissions across some or all of the objects within a single bucket.
+- Policies can be attached to users, groups, or Amazon S3 buckets, enabling centralized management of permissions.
+- With bucket policies, you can grant users within your AWS Account or other AWS Accounts access to your Amazon S3 resources.
+- You can further restrict access to specific resources based on certain conditions. For example, you can restrict access based on request time (Date Condition), whether the request was sent using SSL (Boolean Conditions), a requester’s IP address (IP Address Condition), or based on the requester's client application (String Conditions). To identify these conditions, you use policy keys.
+
+## Notes
+- Amazon S3 Storage class analyzes storage access patterns to help you decide when to transition the right data to the right storage class. Storage class analysis does not give recommendations for transitions to the ONEZONE_IA or S3 Glacier storage classes.
 
 # EBS
 ## Overview

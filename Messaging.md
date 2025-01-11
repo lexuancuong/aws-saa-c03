@@ -61,6 +61,7 @@
 SQS as a buffer to database writes is a good solution for this problem. Because SQS Queue is infinitely scalable (This solution is only work if the client isn't impact by latency of writing to DB).
 - The name of a FIFO queue must end with the .fifo suffix. The suffix counts towards the 80-character queue name limit. To determine whether a queue is FIFO, you can check whether the queue name ends with the suffix.
 - If you have an existing application that uses standard queues and you want to take advantage of the ordering or exactly-once processing features of FIFO queues, you need to configure the queue and your application correctly. You can't convert an existing standard queue into a FIFO queue. To make the move, you must either create a new FIFO queue for your application or delete your existing standard queue and recreate it as a FIFO queue.
+- Always remember that the messages in the SQS queue will continue to exist even after the EC2 instance has processed it, until you delete that message.
 
 # SNS (Simple Notification Service)
 ## Overview
@@ -196,3 +197,23 @@ IAM policies to regulate access to the SNS API
   - You don't need Kafka-specific features
   - You prefer serverless by default
 
+
+# Amazon SWF 
+## Overview
+- SWF is a fully-managed service that helps developers coordinate distributed applications and workflows at scale.
+- It allows you to manage tasks across cloud and on-premises systems, ensuring applications are reliable and scalable.
+## Use cases
+- Amazon SWF is ideal for applications needing precise task management and long-running workflows with state tracking.
+
+## Key Features
+- Task Coordination: Manages and tracks tasks that can be performed by humans or machines.
+- Deciders and Workers:
+- Deciders orchestrate the flow of tasks based on defined workflows.
+- Workers execute the actual tasks (e.g., processing data).
+- State Management: Automatically keeps track of workflow states and task execution history.
+- Retry Logic: Handles retries, timeouts, and task dependencies automatically.
+- Durable Execution: Guarantees that tasks are not lost even if systems fail.
+
+## Comparison with Step Functions
+- SWF: Best for complex, long-running workflows requiring detailed state tracking and custom retry logic.
+- Step Functions: Simplifies workflow creation with a visual editor and integrates tightly with AWS services.

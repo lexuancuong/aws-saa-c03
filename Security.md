@@ -207,6 +207,9 @@ You cannot control access without them.
 4. The IAM Role/User in the target account must have the permissions to DescribeKey, ReEncrypted, CreateGrant, Decrypt.
 5. When lauching an EC2 instance from the AMI, optionally the target account can specify a new KMS key in its own account to re-encrypt the volumes.
 
+### Combine with HSM (Hardware )
+A Custom Key Store in AWS Key Management Service (KMS) allows you to use your own hardware security modules (HSMs) for managing the encryption keys used by KMS. Instead of letting KMS manage keys entirely within its service, a custom key store gives you more control and flexibility over key generation, storage, and usage.
+
 ## Limitations
 - 4KB data size limit for direct encryption
 - API request quotas
@@ -544,3 +547,35 @@ Configure Web ACL for these Rule Actions:
 
 ## Integrations
 Combine with AWS WAF and AWS Shield to maximizing the protection and management.
+
+# Other Services
+
+## AWS Security Token Service
+- Generate temporary tokens to access something.
+
+## CloudHSM (Hardware Security Module) 
+- CloudHSM is a cloud-based hardware security solution provided by cloud service providers like AWS. It offers dedicated hardware security modules that help organizations securely generate, store, and manage cryptographic keys
+
+## Comparisons
+
+| **Service**                | **Purpose**                                                                                     | **Key Features**                                                                                     | **Use Case**                                               |
+|----------------------------|-------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
+| **AWS CloudTrail**         | Tracks API calls and user activity.                                                            | - Logs API calls across AWS services.<br>- Provides audit trails for governance and compliance.      | Monitor user and API activity for auditing or compliance. |
+| **AWS GuardDuty**          | Detects anomalous or malicious activity using machine learning.                                | - Threat detection for AWS accounts and workloads.<br>- Integrates with AWS Security Hub.            | Detect unauthorized access, account compromises.          |
+| **Amazon Macie**           | Automatically discovers and protects sensitive data.                                           | - Identifies PII and other sensitive data.<br>- Monitors S3 buckets for access control.              | Ensure compliance with data privacy regulations.          |
+| **AWS CloudWatch**         | Monitors resources and applications via logs and metrics.                                      | - Custom alarms.<br>- Centralized logging.<br>- Integration with CloudTrail and other AWS services.  | Track operational and security anomalies.                 |
+| **AWS Inspector**          | Automatically assesses application security and compliance.                                    | - Vulnerability scanning.<br>- Supports EC2 and ECR scanning.<br>- Continuous monitoring.            | Identify vulnerabilities in workloads.                    |
+| **AWS Config**             | Tracks configuration changes to AWS resources.                                                | - Resource inventory.<br>- Tracks configuration history.<br>- Compliance checks.                     | Enforce compliance with infrastructure policies.          |
+| **AWS Security Hub**       | Provides a centralized view of security findings across AWS services.                         | - Aggregates findings from GuardDuty, Inspector, and more.<br>- Supports automated response actions. | Manage and prioritize security alerts at scale.           |
+| **AWS Identity and Access Management (IAM)** | Manages access to AWS resources.                                                         | - Fine-grained access controls.<br>- Policy simulation.<br>- Role-based access.                      | Enforce least privilege and secure access.                |
+| **AWS Shield**             | Protects against DDoS attacks.                                                                 | - Standard: Always-on protection.<br>- Advanced: Real-time attack mitigation.                        | Protect web applications from DDoS attacks.               |
+| **AWS WAF (Web Application Firewall)** | Filters malicious web traffic to applications.                                               | - Blocks SQL injection, cross-site scripting.<br>- Custom rule sets.<br>- Geo-restriction support.   | Protect web apps from layer 7 attacks.                    |
+| **AWS Detective**          | Investigates security issues and identifies root causes.                                       | - Analyzes logs and data from CloudTrail, VPC Flow Logs, etc.<br>- Visualizes relationships.          | Investigate and respond to security events.               |
+| **AWS Control Tower**      | Automates multi-account governance.                                                            | - Pre-configured guardrails.<br>- Centralized account setup.                                         | Ensure governance across multiple AWS accounts.           |
+| **Amazon VPC Flow Logs**   | Captures network traffic for analysis.                                                         | - Logs network activity.<br>- Helps identify abnormal network behavior.                              | Monitor traffic patterns and troubleshoot issues.          |
+| **AWS Organizations**      | Centralized management of multiple AWS accounts.                                               | - Service control policies (SCPs).<br>- Cross-account billing.                                       | Govern and control permissions across accounts.           |
+| **AWS Key Management Service (KMS)** | Manages encryption keys for data protection.                                                    | - Secure key storage.<br>- Automatic key rotation.<br>- Integrated with many AWS services.           | Encrypt data at rest and in transit.                      |
+| **Amazon Detective**       | Analyzes data for faster security investigation.                                               | - Visualize and link events across AWS services.<br>- Works well with GuardDuty findings.            | Root cause analysis of security events.                   |
+| **AWS Trusted Advisor**    | Provides best practices for cost, performance, and security.                                   | - Security checks.<br>- Cost optimization.<br>- Fault tolerance recommendations.                     | Identify misconfigurations and improve security posture.  |
+| **Amazon Cognito**         | Provides authentication, authorization, and user management for web and mobile apps.           | - Multi-factor authentication.<br>- Integration with social identity providers.<br>- SAML support.   | Secure app user sign-in and access.                       |
+

@@ -276,6 +276,10 @@
   - On-demand automatic scaling based on application load.
   - Cost-effective for intermittent workloads.
 
+### **Enhanced Monitoring in RDS**
+- (Take note that there are certain differences between CloudWatch and Enhanced Monitoring Metrics. CloudWatch gathers metrics about CPU utilization from the hypervisor for a DB instance, and Enhanced Monitoring gathers its metrics from an agent on the instance).
+- Closely monitor how the different processes or threads on a DB instance use the CPU, including the percentage of the CPU bandwidth and total memory consumed by each process
+
 ---
 
 ## **10. Exam Tips**
